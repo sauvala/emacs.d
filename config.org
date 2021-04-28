@@ -1,0 +1,13 @@
+#+title: Emacs Configuration
+#+author: Janne Sauvala
+
+* Configuration
+  ** Basic UI Configuration
+  #+begin_src emacs-lisp
+    (scroll-bar-mode -1)
+  #+end_src
+
+  ** Surpass native compilation warnings
+  #+begin_src emacs-lisp
+    (setq comp-async-report-warnings-errors nil)
+  #+end_src
