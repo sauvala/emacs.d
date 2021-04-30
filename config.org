@@ -73,25 +73,268 @@
   (use-package evil-tutor)
 #+end_src
 
-#+RESULTS:
-: t
-
-*** General keybindings
-
+*** Keybindings
+**** Evil
 #+begin_src emacs-lisp
 (use-package general
   :config
   (general-evil-setup t))
 #+end_src
 
+**** Mac keyboard + Finnish layout changes
+#+begin_src emacs-lisp
+  (setq mac-option-modifier nil
+        mac-command-modifier 'meta
+        x-select-enable-clipboard t)
+#+end_src
 ** Basic UI Configuration
 
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :results output silent
   (scroll-bar-mode -1)
+  (tool-bar-mode -1)
+  (tooltip-mode -1)
+  (set-fringe-mode 0)
+  (menu-bar-mode 1)
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+
+  ;; Disable line numbers for some modes
+  (dolist (mode '(org-mode-hook
+                  term-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook))
+   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
-** Surpass native compilation warnings
+*** Dark mode
+#+begin_src emacs-lisp :results output silent
+        ;;(defun my/apply-theme (appearance)
+        ;;  "Load theme, taking current system APPEARANCE into consideration."
+          ;;(mapc #'disable-theme custom-enabled-themes)
+        ;;  (pcase appearance
+         ;;   ('light (load-theme 'tango-dark t)) ;; or 'tango
+         ;;   ('dark (load-theme 'tango-dark t))))
+        ;;(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+      (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+    (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
-#+begin_src emacs-lisp
+  ;;(add-to-list 'default-frame-alist '(undecorated . 1))
+(setq ns-use-proxy-icon nil)
+    (setq frame-title-format nil)
+#+end_src
+*** Theme
+#+begin_src emacs-lisp :results output silent
+  (use-package doom-themes)
+  (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
+        doom-themes-enable-italic t) ; if nil, italics is universally disabled
+  (load-theme 'doom-one t)
+#+end_src
+
+*** Surpass native compilation warnings
+
+#+begin_src emacs-lisp :results output silent
   (setq comp-async-report-warnings-errors nil)
+#+end_src
+
+*** Fonts
+
+#+begin_src emacs-lisp :results output silent
+  (defvar efs/default-font-size 150)
+  (defvar efs/default-variable-font-size 150)
+
+  (set-face-attribute 'default nil :font "JetBrains Mono" :height efs/default-font-size)
+
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil :font "JetBrains Mono" :height efs/default-font-size)
+
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil :font "JetBrains Mono" :height efs/default-font-size :weight 'regular)
+#+end_src
+
+*** all-the-icons
+
+#+begin_src emacs-lisp :results output silent
+  (use-package all-the-icons)   
+#+end_src
+
+*** Dashboard
+
+#+begin_src emacs-lisp :results output silent
+  (use-package dashboard
+   :init      ;; tweak dashboard config before loading it
+   (setq dashboard-set-heading-icons t)
+   (setq dashboard-set-file-icons t)
+   (setq dashboard-banner-logo-title "Emacs Is More Than A Text Editor!")
+   ;;(setq dashboard-startup-banner 'logo) ;; use standard emacs logo as banner
+   (setq dashboard-startup-banner "~/.emacs.d/emacs-dash.png")  ;; use custom image as banner
+   (setq dashboard-center-content nil)
+   (setq dashboard-items '((recents . 5)
+                           (agenda . 5 )
+                           (bookmarks . 3)
+                           (projects . 3)
+                           (registers . 3)))
+   :config
+   (dashboard-setup-startup-hook)
+   (dashboard-modify-heading-icons '((recents . "file-text")
+                               (bookmarks . "book"))))
+  (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
+#+end_src
+
+*** Scrolling
+#+begin_src emacs-lisp :results output silent
+  (setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
+  (setq mouse-wheel-scroll-amount '(3 ((shift) . 6))) ;; how many lines at a time
+  (setq mouse-wheel-progressive-speed nil) ;; accelerate scrolling
+  (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  (setq inhibit-compacting-font-caches t)
+#+end_src
+
+** Development
+
+*** Projectile
+    
+#+begin_src emacs-lisp :results output silent
+  (use-package projectile
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ivy))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (file-directory-p "~/Dev")
+      (setq projectile-project-search-path '("~/Dev")))
+    (setq projectile-switch-project-action #'projectile-dired))
+
+  (use-package counsel-projectile
+    :config (counsel-projectile-mode))
+#+end_src
+
+** Org Mode
+
+*** Basic config
+
+#+begin_src emacs-lisp :results output silent
+  (defun efs/org-mode-setup ()
+    (org-indent-mode)
+    (variable-pitch-mode 1)
+    (visual-line-mode 1))
+
+  (use-package org
+    :hook (org-mode . efs/org-mode-setup)
+    :config
+    (setq org-ellipsis " ▾")
+
+    (setq org-agenda-start-with-log-mode t)
+    (setq org-log-done 'time)
+    (setq org-log-into-drawer t)
+
+    (require 'org-habit)
+    (add-to-list 'org-modules 'org-habit)
+    (setq org-habit-graph-column 60)
+  
+    (setq org-todo-keywords
+      '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
+        (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
+
+    (setq org-refile-targets
+      '(("Archive.org" :maxlevel . 1)
+        ("Tasks.org" :maxlevel . 1)))
+
+    ;; Save Org buffers after refiling!
+    (advice-add 'org-refile :after 'org-save-all-org-buffers)
+
+    (setq org-tag-alist
+      '((:startgroup)
+         ; Put mutually exclusive tags here
+         (:endgroup)
+         ("@errand" . ?E)
+         ("@home" . ?H)
+         ("@work" . ?W)
+         ("agenda" . ?a)
+         ("planning" . ?p)
+         ("publish" . ?P)
+         ("batch" . ?b)
+         ("note" . ?n)
+         ("idea" . ?i)))
+
+    ;; Configure custom agenda views
+    (setq org-agenda-custom-commands
+     '(("d" "Dashboard"
+       ((agenda "" ((org-deadline-warning-days 7)))
+        (todo "NEXT"
+          ((org-agenda-overriding-header "Next Tasks")))
+        (tags-todo "agenda/ACTIVE" ((org-agenda-overriding-header "Active Projects")))))
+
+      ("n" "Next Tasks"
+       ((todo "NEXT"
+          ((org-agenda-overriding-header "Next Tasks")))))
+
+      ("W" "Work Tasks" tags-todo "+work-email")
+
+      ;; Low-effort next actions
+      ("e" tags-todo "+TODO=\"NEXT\"+Effort<15&+Effort>0"
+       ((org-agenda-overriding-header "Low Effort Tasks")
+        (org-agenda-max-todos 20)
+        (org-agenda-files org-agenda-files)))
+
+      ("w" "Workflow Status"
+       ((todo "WAIT"
+              ((org-agenda-overriding-header "Waiting on External")
+               (org-agenda-files org-agenda-files)))
+        (todo "REVIEW"
+              ((org-agenda-overriding-header "In Review")
+               (org-agenda-files org-agenda-files)))
+        (todo "PLAN"
+              ((org-agenda-overriding-header "In Planning")
+               (org-agenda-todo-list-sublevels nil)
+               (org-agenda-files org-agenda-files)))
+        (todo "BACKLOG"
+              ((org-agenda-overriding-header "Project Backlog")
+               (org-agenda-todo-list-sublevels nil)
+               (org-agenda-files org-agenda-files)))
+        (todo "READY"
+              ((org-agenda-overriding-header "Ready for Work")
+               (org-agenda-files org-agenda-files)))
+        (todo "ACTIVE"
+              ((org-agenda-overriding-header "Active Projects")
+               (org-agenda-files org-agenda-files)))
+        (todo "COMPLETED"
+              ((org-agenda-overriding-header "Completed Projects")
+               (org-agenda-files org-agenda-files)))
+        (todo "CANC"
+              ((org-agenda-overriding-header "Cancelled Projects")
+               (org-agenda-files org-agenda-files)))))))
+
+  (define-key global-map (kbd "C-c j")
+    (lambda () (interactive) (org-capture nil "jj")))
+
+  (efs/org-font-setup))
+#+end_src
+
+*** Nice Heading Bullets
+
+#+begin_src emacs-lisp :results output silent
+  (use-package org-bullets
+    :after org
+    :hook (org-mode . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+
+** Configuration
+
+*** Babel Languages
+
+#+begin_src emacs-lisp :results output silent
+  (org-babel-do-load-languages
+    'org-babel-load-languages
+    '((emacs-lisp . t)))
+
+  (push '("conf-unix" . conf-unix) org-src-lang-modes)
+
+  ;; Syntax highlight in #+BEGIN_SRC blocks
+  (setq org-src-fontify-natively t)
+  ;; Don't prompt before running code in org
+  (setq org-confirm-babel-evaluate nil)
 #+end_src
