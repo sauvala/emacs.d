@@ -3,9 +3,9 @@
 
 * Configuration
   
-** Packages
+* Packages
 
-*** Setup packages.el to work with MELPA
+** Setup packages.el to work with MELPA
 
 #+begin_src emacs-lisp
   (require 'package)
@@ -17,7 +17,7 @@
     (package-refresh-contents))
 #+end_src
 
-*** Setup use-package
+** Setup use-package
 
 #+begin_src emacs-lisp
   (unless (package-installed-p 'use-package)
@@ -26,9 +26,13 @@
   (setq use-package-always-ensure t)
 #+end_src
 
-** Keybindings
+** native-comp packages
+#+begin_src emacs-lisp
+   ;; (setq package-native-compile t)
+#+end_src
+* Keybindings
 
-*** evil-mode
+** evil-mode
 
 #+begin_src emacs-lisp
   ;; Make ESC quit prompts
@@ -73,21 +77,45 @@
   (use-package evil-tutor)
 #+end_src
 
-*** Keybindings
-**** Evil
+** Evil
 #+begin_src emacs-lisp
 (use-package general
   :config
   (general-evil-setup t))
 #+end_src
 
-**** Mac keyboard + Finnish layout changes
+#+begin_src emacs-lisp :results output silent
+  (nvmap :keymaps 'override :prefix "SPC"
+         "SPC"   '(counsel-M-x :which-key "M-x")
+         "c c"   '(compile :which-key "Compile")
+         "c C"   '(recompile :which-key "Recompile")
+         "h r r" '((lambda () (interactive) (load-file "~/.emacs.d/init.el")) :which-key "Reload emacs config")
+         "t t"   '(toggle-truncate-lines :which-key "Toggle truncate lines"))
+  (nvmap :keymaps 'override :prefix "SPC"
+         "m *"   '(org-ctrl-c-star :which-key "Org-ctrl-c-star")
+         "m +"   '(org-ctrl-c-minus :which-key "Org-ctrl-c-minus")
+         "m ."   '(counsel-org-goto :which-key "Counsel org goto")
+         "m e"   '(org-export-dispatch :which-key "Org export dispatch")
+         "m f"   '(org-footnote-new :which-key "Org footnote new")
+         "m h"   '(org-toggle-heading :which-key "Org toggle heading")
+         "m i"   '(org-toggle-item :which-key "Org toggle item")
+         "m n"   '(org-store-link :which-key "Org store link")
+         "m o"   '(org-set-property :which-key "Org set property")
+         "m t"   '(org-todo :which-key "Org todo")
+         "m x"   '(org-toggle-checkbox :which-key "Org toggle checkbox")
+         "m B"   '(org-babel-tangle :which-key "Org babel tangle")
+         "m I"   '(org-toggle-inline-images :which-key "Org toggle inline imager")
+         "m T"   '(org-todo-list :which-key "Org todo list")
+         "o a"   '(org-agenda :which-key "Org agenda")
+         )
+#+end_src
+** Mac keyboard + Finnish layout changes
 #+begin_src emacs-lisp
   (setq mac-option-modifier nil
         mac-command-modifier 'meta
         x-select-enable-clipboard t)
 #+end_src
-** Basic UI Configuration
+* Basic UI Configuration
 
 #+begin_src emacs-lisp :results output silent
   (scroll-bar-mode -1)
@@ -106,23 +134,25 @@
    (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
 
-*** Dark mode
+** Dark mode
 #+begin_src emacs-lisp :results output silent
-        ;;(defun my/apply-theme (appearance)
-        ;;  "Load theme, taking current system APPEARANCE into consideration."
-          ;;(mapc #'disable-theme custom-enabled-themes)
-        ;;  (pcase appearance
-         ;;   ('light (load-theme 'tango-dark t)) ;; or 'tango
-         ;;   ('dark (load-theme 'tango-dark t))))
-        ;;(add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
-      (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-    (add-to-list 'default-frame-alist '(ns-appearance . dark))
+  (defun my/apply-theme (appearance)
+   "Load theme, taking current system APPEARANCE into consideration."
+    (mapc #'disable-theme custom-enabled-themes)
+   (pcase appearance
+     ('light (load-theme 'tango-dark t)) ;; or 'tango
+     ('dark (load-theme 'tango-dark t))))
+  
+  (add-hook 'ns-system-appearance-change-functions #'my/apply-theme)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
 
   ;;(add-to-list 'default-frame-alist '(undecorated . 1))
-(setq ns-use-proxy-icon nil)
-    (setq frame-title-format nil)
+  (setq ns-use-proxy-icon nil)
+  (setq frame-title-format nil)
 #+end_src
-*** Theme
+
+** Theme
 #+begin_src emacs-lisp :results output silent
   (use-package doom-themes)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -130,13 +160,12 @@
   (load-theme 'doom-one t)
 #+end_src
 
-*** Surpass native compilation warnings
-
+** Surpass native compilation warnings
 #+begin_src emacs-lisp :results output silent
   (setq comp-async-report-warnings-errors nil)
 #+end_src
 
-*** Fonts
+** Fonts
 
 #+begin_src emacs-lisp :results output silent
   (defvar efs/default-font-size 150)
@@ -151,14 +180,12 @@
   (set-face-attribute 'variable-pitch nil :font "JetBrains Mono" :height efs/default-font-size :weight 'regular)
 #+end_src
 
-*** all-the-icons
-
+** all-the-icons
 #+begin_src emacs-lisp :results output silent
   (use-package all-the-icons)   
 #+end_src
 
-*** Dashboard
-
+** Dashboard
 #+begin_src emacs-lisp :results output silent
   (use-package dashboard
    :init      ;; tweak dashboard config before loading it
@@ -180,7 +207,7 @@
   (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 #+end_src
 
-*** Scrolling
+** Scrolling
 #+begin_src emacs-lisp :results output silent
   (setq scroll-conservatively 101) ;; value greater than 100 gets rid of half page jumping
   (setq mouse-wheel-scroll-amount '(3 ((shift) . 6))) ;; how many lines at a time
@@ -189,10 +216,95 @@
   (setq inhibit-compacting-font-caches t)
 #+end_src
 
+** Completion
+#+begin_src emacs-lisp :results output silent
+  (use-package ivy
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done)
+           ("C-l" . ivy-alt-done)
+           ("C-j" . ivy-next-line)
+           ("C-k" . ivy-previous-line)
+           :map ivy-switch-buffer-map
+           ("C-k" . ivy-previous-line)
+           ("C-l" . ivy-done)
+           ("C-d" . ivy-switch-buffer-kill)
+           :map ivy-reverse-i-search-map
+           ("C-k" . ivy-previous-line)
+           ("C-d" . ivy-reverse-i-search-kill))
+    :config
+    (ivy-mode 1))
+
+  (use-package ivy-rich
+    :after ivy
+    :init
+    (ivy-rich-mode 1))
+
+  (use-package counsel
+    :bind (("C-M-j" . 'counsel-switch-buffer)
+           :map minibuffer-local-map
+           ("C-r" . 'counsel-minibuffer-history))
+    :custom
+    (counsel-linux-app-format-function #'counsel-linux-app-format-function-name-only)
+    :config
+    (counsel-mode 1))
+#+end_src
+
+** M-x tuning
+#+begin_src emacs-lisp :results output silent
+  (setq ivy-initial-inputs-alist nil)
+#+end_src
+
+** Ivy-posframe
+#+begin_src emacs-lisp :results output silent
+  (use-package ivy-posframe
+    :init
+    (setq ivy-posframe-display-functions-alist
+      '((swiper                     . ivy-posframe-display-at-point)
+        (complete-symbol            . ivy-posframe-display-at-point)
+        (counsel-M-x                . ivy-display-function-fallback)
+        (counsel-esh-history        . ivy-posframe-display-at-window-center)
+        (counsel-describe-function  . ivy-display-function-fallback)
+        (counsel-describe-variable  . ivy-display-function-fallback)
+        (counsel-find-file          . ivy-display-function-fallback)
+        (counsel-recentf            . ivy-display-function-fallback)
+        (counsel-register           . ivy-posframe-display-at-frame-bottom-window-center)
+        (dmenu                      . ivy-posframe-display-at-frame-top-center)
+        (nil                        . ivy-posframe-display))
+      ivy-posframe-height-alist
+      '((swiper . 20)
+        (dmenu . 20)
+        (t . 10)))
+    :config
+    (ivy-posframe-mode 1)) ; 1 enables posframe-mode, 0 disables it.
+#+end_src
+
+** Improved Candidate Sorting
+#+begin_src emacs-lisp :results output silent
+  (use-package ivy-prescient
+    :after counsel
+    :custom
+    (ivy-prescient-enable-filtering nil)
+    :config
+    ;; Uncomment the following line to have sorting remembered across sessions!
+    ;(prescient-persist-mode 1)
+    (ivy-prescient-mode 1))
+#+end_src
+
+** Which Key
+#+begin_src emacs-lisp :results output silent
+  (use-package which-key
+    :defer 0
+    :diminish which-key-mode
+    :config
+    (which-key-mode)
+    (setq which-key-idle-delay 1))
+#+end_src
+
 ** Development
 
 *** Projectile
-    
 #+begin_src emacs-lisp :results output silent
   (use-package projectile
     :diminish projectile-mode
@@ -210,10 +322,46 @@
     :config (counsel-projectile-mode))
 #+end_src
 
+*** Commenting
+#+begin_src emacs-lisp :results output silent
+  (use-package evil-commentary)
+  (evil-commentary-mode)
+#+end_src
 ** Org Mode
+*** Better Font Faces
+#+begin_src emacs-lisp :results output silent
+  (defun efs/org-font-setup ()
+    ;; Replace list hyphen with dot
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+    ;; Set faces for heading levels
+    (dolist (face '((org-level-1 . 1.2)
+                    (org-level-2 . 1.1)
+                    (org-level-3 . 1.05)
+                    (org-level-4 . 1.0)
+                    (org-level-5 . 1.1)
+                    (org-level-6 . 1.1)
+                    (org-level-7 . 1.1)
+                    (org-level-8 . 1.1)))
+      (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'regular :height (cdr face)))
+
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    (set-face-attribute 'org-block nil    :foreground nil :inherit 'fixed-pitch)
+    (set-face-attribute 'org-table nil    :inherit 'fixed-pitch)
+    (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'org-code nil     :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-table nil    :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    (set-face-attribute 'org-checkbox nil  :inherit 'fixed-pitch)
+    (set-face-attribute 'line-number nil :inherit 'fixed-pitch)
+    (set-face-attribute 'line-number-current-line nil :inherit 'fixed-pitch))
+#+end_src
 
 *** Basic config
-
 #+begin_src emacs-lisp :results output silent
   (defun efs/org-mode-setup ()
     (org-indent-mode)
@@ -232,7 +380,7 @@
     (require 'org-habit)
     (add-to-list 'org-modules 'org-habit)
     (setq org-habit-graph-column 60)
-  
+
     (setq org-todo-keywords
       '((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d!)")
         (sequence "BACKLOG(b)" "PLAN(p)" "READY(r)" "ACTIVE(a)" "REVIEW(v)" "WAIT(w@/!)" "HOLD(h)" "|" "COMPLETED(c)" "CANC(k@)")))
@@ -310,16 +458,19 @@
     (lambda () (interactive) (org-capture nil "jj")))
 
   (efs/org-font-setup))
+
+  (use-package org-tempo
+    :ensure nil) 
 #+end_src
 
 *** Nice Heading Bullets
 
-#+begin_src emacs-lisp :results output silent
-  (use-package org-bullets
-    :after org
-    :hook (org-mode . org-bullets-mode)
-    :custom
-    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+begin_src emacs lisp :results output silent
+  ;; (use-package org-bullets
+  ;;   :after or
+  ;;   :hook (org-mode . org-bullets-mode)
+  ;;   :custom
+  ;;   (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
 #+end_src
 
 ** Configuration
