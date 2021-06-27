@@ -180,8 +180,7 @@
       "ff"  '(find-file :which-key "open file")
       "fs"  'save-buffer
       "fr"  '(consult-recent-file :which-key "recent files")
-      "fR"  '(revert-buffer :which-key "revert file")
-      "fj"  '(counsel-file-jump :which-key "jump to file"))
+      "fR"  '(revert-buffer :which-key "revert file"))
 #+end_src
 
 * General configuration
@@ -405,12 +404,6 @@ https://github.com/oantolin/embark
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
-*** Counsel
-This is mainly for the handy `counsel-file-jump` -command
-#+begin_src emacs-lisp
-  (use-package counsel)
-#+end_src
-
 * Development
 ** Magit
 #+begin_src emacs-lisp
