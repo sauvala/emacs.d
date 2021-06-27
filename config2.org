@@ -177,13 +177,13 @@
   (js/leader-key-def
     "r"   '(ivy-resume :which-key "ivy resume")
     "f"   '(:ignore t :which-key "files")
-    "ff"  '(counsel-find-file :which-key "open file")
+    "ff"  '(find-file :which-key "open file")
     "fs"  'save-buffer
-    "C-f" 'counsel-find-file
-    "fr"  '(counsel-recentf :which-key "recent files")
+    "fr"  '(consult-recent-file :which-key "recent files")
     "fR"  '(revert-buffer :which-key "revert file")
     "fj"  '(counsel-file-jump :which-key "jump to file"))
 #+end_src
+
 * General configuration
 ** User interface
 #+begin_src emacs-lisp
@@ -218,7 +218,7 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
   #+end_src
-
+  
 ** Theme
 #+begin_src emacs-lisp
 (use-package spacegray-theme :defer t)
@@ -284,6 +284,13 @@
   (doom-modeline-major-mode-icon nil))
 (doom-modeline-mode 1)
 #+end_src
+
+** Recent files
+   #+begin_src emacs-lisp
+     (recentf-mode 1)
+     (setq recentf-max-menu-items 25)
+     (setq recentf-max-saved-items 25)
+   #+end_src
 
 * Completion
 Many of the settings here are taken from daviwil.
@@ -425,3 +432,20 @@ https://github.com/oantolin/embark
   "gr"  'magit-rebase)
 #+end_src
 
+** Productivity 
+*** Rainbow delimiter
+   #+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :hook (prog-mode . rainbow-delimiters-mode))
+  #+end_src
+
+*** Rainbow mode
+    #+begin_src emacs-lisp
+(use-package rainbow-mode
+  :defer t
+  :hook (org-mode
+         emacs-lisp-mode
+         web-mode
+         typescript-mode
+         js2-mode))
+    #+end_src
