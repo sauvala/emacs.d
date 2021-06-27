@@ -447,8 +447,8 @@ This is mainly for the handy `counsel-file-jump` -command
        ("C-c p" . projectile-command-map)
        :init
        (when (file-directory-p "~/Dev")
-	 (setq projectile-project-search-path '("~/Dev"))
-	 (projectile-add-known-project "~/emacs.default")))
+	 (setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
+	 (projectile-add-known-project "~/.emacs.default")))
 
      (use-package consult-projectile
        :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
