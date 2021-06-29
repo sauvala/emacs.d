@@ -496,6 +496,14 @@ https://github.com/oantolin/embark
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 #+end_src
+*** Pyright
+#+begin_src emacs-lisp
+  (use-package lsp-pyright
+    :ensure t
+    :hook (python-mode . (lambda ()
+                            (require 'lsp-pyright)
+                            (lsp))))  ; or lsp-deferred
+#+end_src
 
 ** Productivity 
 *** Rainbow delimiter
