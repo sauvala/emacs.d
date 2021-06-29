@@ -496,43 +496,43 @@ https://github.com/oantolin/embark
               (setq evil-auto-indent nil)
               (diminish org-indent-mode))
 
-            (use-package org
-              :defer t
-              :hook (org-mode . js/org-mode-setup)
-              :config
-              (setq org-ellipsis " ▾"
-                    org-hide-emphasis-markers t
-                    org-src-fontify-natively t
-                    org-fontify-quote-and-verse-blocks t
-                    org-src-tab-acts-natively t
-                    org-edit-src-content-indentation 2
-                    org-hide-block-startup nil
-                    org-src-preserve-indentation nil
-                    org-startup-folded 'content
-                    org-cycle-separator-lines 2)
-  (setq org-modules
+  (use-package org
+    :defer t
+    :hook (org-mode . js/org-mode-setup)
+    :config
+    (setq org-ellipsis " ▾"
+          org-hide-emphasis-markers t
+          org-src-fontify-natively t
+          org-fontify-quote-and-verse-blocks t
+          org-src-tab-acts-natively t
+          org-edit-src-content-indentation 2
+          org-hide-block-startup nil
+          org-src-preserve-indentation nil
+          org-startup-folded 'content
+          org-cycle-separator-lines 2)
+
+    (setq org-modules
       '(org-crypt
           org-habit
           org-bookmark
           org-eshell
           org-irc))
 
-  (setq org-refile-targets '((nil :maxlevel . 1)
+    (setq org-refile-targets '((nil :maxlevel . 1)
                                (org-agenda-files :maxlevel . 1)))
 
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path t)
+    (setq org-outline-path-complete-in-steps nil)
+    (setq org-refile-use-outline-path t)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
 
-  (org-babel-do-load-languages
+    (org-babel-do-load-languages
       'org-babel-load-languages
-      '((emacs-lisp . t)
-        (ledger . t))))
+      '((emacs-lisp . t))))
  #+end_src
 
 ** Block templates
