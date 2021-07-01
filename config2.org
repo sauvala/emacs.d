@@ -592,6 +592,12 @@ Javascript and Typescript
          js2-mode))
     #+end_src
 
+*** Flycheck
+#+begin_src emacs-lisp
+  (use-package flycheck
+    :defer t
+    :hook (lsp-mode . flycheck-mode))
+#+end_src
 * Org mode
 ** Org config
 #+begin_src emacs-lisp

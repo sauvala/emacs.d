@@ -466,6 +466,10 @@ folder, otherwise delete a word"
          typescript-mode
          js2-mode))
 
+(use-package flycheck
+  :defer t
+  :hook (lsp-mode . flycheck-mode))
+
 ;; Turn on indentation and auto-fill mode for Org files
 (defun js/org-mode-setup ()
              (org-indent-mode)
