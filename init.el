@@ -352,28 +352,28 @@ folder, otherwise delete a word"
   "gr"  'magit-rebase)
 
 (use-package projectile
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :demand t
-  :bind ("C-M-p" . projectile-find-file)
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  (when (file-directory-p "~/Dev")
-    (setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
-    (projectile-add-known-project "~/.emacs.default")))
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :demand t
+    :bind ("C-M-p" . projectile-find-file)
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    (when (file-directory-p "~/Dev")
+(setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
+(projectile-add-known-project "~/.emacs.default")))
 
-(use-package consult-projectile
-  :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
+  (use-package consult-projectile
+    :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
 
-(js/leader-key-def
-  "p"   '(:ignore t :which-key "project")
-  "pf"  'projectile-find-file
-  "ps"  'projectile-switch-project
-  "pF"  'consult-ripgrep
-  "pp"  'projectile-find-file
-  "pc"  'projectile-compile-project
-  "pd"  'projectile-dired)
+  (js/leader-key-def
+    "p"   '(:ignore t :which-key "project")
+    "pf"  'projectile-find-file
+    "ps"  'projectile-switch-project
+    "pF"  'consult-ripgrep
+    "pp"  'projectile-find-file
+    "pc"  'projectile-compile-project
+    "pd"  'projectile-dired)
 
 (use-package lsp-mode
   :straight t
@@ -423,13 +423,21 @@ folder, otherwise delete a word"
   (setq-default tab-width 2))
 
 (use-package js2-mode
-  :mode "\\.jsx?\\'"
+  :mode
+  (("\\.js\\'" . js2-mode))
+  :custom
+  (js2-include-node-externs t)
+  (js2-global-externs '("customElements"))
+  (js2-highlight-level 3)
+  (js2r-prefer-let-over-var t)
+  (js2r-prefered-quote-type 2)
+  (js-indent-align-list-continuation t)
+  (global-auto-highlight-symbol-mode t) 
   :config
   ;; Use js2-mode for Node scripts
   (add-to-list 'magic-mode-alist '("#!/usr/bin/env node" . js2-mode))
-
   ;; Don't use built-in syntax checking
-  (setq js2-mode-show-strict-warnings nil)
+  ; (setq js2-mode-show-strict-warnings nil)
 
   ;; Set up proper indentation in JavaScript and JSON files
   (add-hook 'js2-mode-hook #'js/set-js-indentation)
@@ -443,7 +451,7 @@ folder, otherwise delete a word"
 (use-package prettier-js
   :hook ((js2-mode . prettier-js-mode)
           (typescript-mode . prettier-js-mode))
-  :config
+  ;:config
   ;(setq prettier-js-show-errors nil)
   )
 
