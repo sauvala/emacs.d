@@ -112,8 +112,8 @@
 
 (use-package evil-collection
   :after evil
-  :init
-  (setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
+  ;:init
+  ;(setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
   :custom
   (evil-collection-outline-bind-tab-p nil)
   :config
@@ -352,28 +352,28 @@ folder, otherwise delete a word"
   "gr"  'magit-rebase)
 
 (use-package projectile
-    :diminish projectile-mode
-    :config (projectile-mode)
-    :demand t
-    :bind ("C-M-p" . projectile-find-file)
-    :bind-keymap
-    ("C-c p" . projectile-command-map)
-    :init
-    (when (file-directory-p "~/Dev")
-(setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
-(projectile-add-known-project "~/.emacs.default")))
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :demand t
+  :bind ("C-M-p" . projectile-find-file)
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  (when (file-directory-p "~/Dev")
+    (setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
+    (projectile-add-known-project "~/.emacs.default")))
 
-  (use-package consult-projectile
-    :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
+(use-package consult-projectile
+  :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
 
-  (js/leader-key-def
-    "p"   '(:ignore t :which-key "project")
-    "pf"  'projectile-find-file
-    "ps"  'projectile-switch-project
-    "pF"  'consult-ripgrep
-    "pp"  'projectile-find-file
-    "pc"  'projectile-compile-project
-    "pd"  'projectile-dired)
+(js/leader-key-def
+  "p"   '(:ignore t :which-key "project")
+  "pf"  'projectile-find-file
+  "ps"  'projectile-switch-project
+  "pF"  'consult-ripgrep
+  "pp"  'projectile-find-file
+  "pc"  'projectile-compile-project
+  "pd"  'projectile-dired)
 
 (use-package lsp-mode
   :straight t
