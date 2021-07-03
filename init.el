@@ -39,7 +39,7 @@
   (load bootstrap-file nil 'nomessage))
 
 ;; Always use straight to install on systems other than Linux
-(setq straight-use-package-by-default (not (eq system-type 'gnu/linux)))
+(setq straight-use-package-by-default t)
 
 ;; Use straight.el for use-package expressions
 (straight-use-package 'use-package)
@@ -386,7 +386,6 @@ folder, otherwise delete a word"
   "pd"  'projectile-dired)
 
 (use-package lsp-mode
-  :straight t
   :commands lsp
   :hook ((python-mode) . lsp)
   :bind (:map lsp-mode-map
@@ -405,7 +404,6 @@ folder, otherwise delete a word"
   "lX" 'lsp-execute-code-action)
 
 (use-package lsp-ui
-  :straight t
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-ui-sideline-enable t)
