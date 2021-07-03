@@ -176,6 +176,18 @@
 (load-theme 'doom-one t)
 (doom-themes-visual-bell-config)
 
+;; (straight-use-package
+;;  '(nano-emacs :type git
+;;               :host github
+;;               :repo "rougier/nano-emacs"))
+;; (require 'nano-theme-dark)
+;; (require 'nano-faces)
+;; (nano-faces)
+;; (require 'nano-theme)
+;; (nano-theme)
+;; (require 'nano-modeline)
+;; (require -nanp-splash)
+
 (defvar efs/default-font-size 150)
 (defvar efs/default-variable-font-size 150)
 
