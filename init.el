@@ -332,7 +332,6 @@ folder, otherwise delete a word"
 	embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
-  :ensure t
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
   ;; if you want to have consult previews as you move around an
@@ -412,7 +411,6 @@ folder, otherwise delete a word"
   (lsp-ui-doc-show))
 
 (use-package lsp-pyright
-  :ensure t
   :hook (python-mode . (lambda ()
                           (require 'lsp-pyright)
                           (lsp))))  ; or lsp-deferred
