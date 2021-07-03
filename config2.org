@@ -61,9 +61,6 @@
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
 #+end_src
-#+begin_src emacs-lisp
-(straight-use-package 'org)
-#+end_src
 * Keep .emacs.d clean
 #+begin_src emacs-lisp
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
