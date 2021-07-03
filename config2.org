@@ -223,10 +223,10 @@
   
 ** Theme
 #+begin_src emacs-lisp
-(use-package spacegray-theme :defer t)
-(use-package doom-themes :defer t)
-(load-theme 'doom-one t)
-(doom-themes-visual-bell-config)
+  (use-package spacegray-theme :defer t)
+  (use-package doom-themes :defer t)
+  (load-theme 'doom-one t)
+  (doom-themes-visual-bell-config)
 #+end_src
 
 ** Font
