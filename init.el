@@ -417,7 +417,7 @@ folder, otherwise delete a word"
 
 (use-package lsp-mode
   :commands lsp
-  ;:hook ((python-mode) . lsp)
+  :hook (python-mode . lsp)
   :bind (:map lsp-mode-map
          ("TAB" . completion-at-point))
   :custom (lsp-headerline-breadcrumb-enable nil))
@@ -434,18 +434,13 @@ folder, otherwise delete a word"
   "lX" 'lsp-execute-code-action)
 
 (use-package lsp-ui
+  :after lsp-mode
   :hook (lsp-mode . lsp-ui-mode)
   :config
-  (setq lsp-ui-sideline-enable t)
-  (setq lsp-ui-sideline-show-hover t)
-  (setq lsp-ui-doc-position 'bottom)
-  (lsp-ui-doc-show))
+  (setq lsp-ui-doc-position 'bottom))
 
 (use-package lsp-pyright
-  :ensure t
-  :hook (python-mode . (lambda ()
-                         (require 'lsp-pyright)
-                         (lsp))))  ; or lsp-deferred
+  :after lsp-mode)
 
 (use-package dap-mode
   ;; Uncomment the config below if you want all UI panes to be hidden by default!
