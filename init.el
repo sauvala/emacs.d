@@ -369,9 +369,9 @@ folder, otherwise delete a word"
   "pc"  'projectile-compile-project
   "pd"  'projectile-dired)
 
-(use-package python-mode
-  :mode ("\\.py\\'" . python-mode)
-  :hook (python-mode . lsp-deferred))
+(use-package elpy
+  :init
+  (elpy-enable))
 
 (use-package nvm
   :defer t)
@@ -421,7 +421,7 @@ folder, otherwise delete a word"
 
 (use-package lsp-mode
   :commands lsp
-  :hook ((python-mode) . lsp)
+  ;:hook ((python-mode) . lsp)
   :bind (:map lsp-mode-map
          ("TAB" . completion-at-point))
   :custom (lsp-headerline-breadcrumb-enable nil))
@@ -444,11 +444,6 @@ folder, otherwise delete a word"
   (setq lsp-ui-sideline-show-hover nil)
   (setq lsp-ui-doc-position 'bottom)
   (lsp-ui-doc-show))
-
-(use-package lsp-pyright
-  :hook (python-mode . (lambda ()
-                          (require 'lsp-pyright)
-                          (lsp))))  ; or lsp-deferred
 
 (use-package dap-mode
   ;; Uncomment the config below if you want all UI panes to be hidden by default!
