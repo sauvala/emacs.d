@@ -477,12 +477,6 @@ https://github.com/oantolin/embark
 #+end_src
 
 ** Languages
-*** Python
-#+begin_src emacs-lisp
-  (use-package elpy
-    :init
-    (elpy-enable))
-#+end_src
 *** Javascript
 Use nvm
 #+begin_src emacs-lisp
@@ -559,11 +553,19 @@ Javascript and Typescript
     :hook (lsp-mode . lsp-ui-mode)
     :config
     (setq lsp-ui-sideline-enable t)
-    (setq lsp-ui-sideline-show-hover nil)
+    (setq lsp-ui-sideline-show-hover t)
     (setq lsp-ui-doc-position 'bottom)
     (lsp-ui-doc-show))
 #+end_src
 
+**** Python
+#+begin_src emacs-lisp
+  (use-package lsp-pyright
+    :ensure t
+    :hook (python-mode . (lambda ()
+                           (require 'lsp-pyright)
+                           (lsp))))  ; or lsp-deferred
+#+end_src
 **** dap-mode
 #+begin_src emacs-lisp
   (use-package dap-mode
