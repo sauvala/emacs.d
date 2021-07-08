@@ -61,6 +61,10 @@ Configure Straight.el
   (load custom-file t)
 #+end_src
 
+* Server mode
+#+begin_src emacs-lisp
+  (server-start)
+#+end_src
 * Keyboard bindings
 ** Mac keyboard + Finnish layout changes
 #+begin_src emacs-lisp
