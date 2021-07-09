@@ -591,3 +591,5 @@ folder, otherwise delete a word"
 ;;   :config
 ;;   (js/leader-key-def
 ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
+
+(setq gc-cons-threshold (* 2 1000 1000))

@@ -743,3 +743,9 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
   ;;   (js/leader-key-def
   ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 #+end_src
+
+* Runtime performance
+Make gc pauses faster by decreasing the threshold.
+#+begin_src emacs-lisp
+  (setq gc-cons-threshold (* 2 1000 1000))
+#+end_src
