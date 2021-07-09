@@ -138,8 +138,6 @@
                            (time-subtract after-init-time before-init-time)))
                   package-count
                   gcs-done)))
-  :init
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
   :config
   (setq dashboard-startup-banner 'logo
         dashboard-projects-backend 'projectile
@@ -153,9 +151,7 @@
                           (registers . 5))
         dashboard-init-info js/startup-time-message)
   (dashboard-setup-startup-hook)
-  :hook
-  ((server-after-make-frame . dashboard-refresh-buffer)
-   (after-init . dashboard-refresh-buffer)))
+  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
