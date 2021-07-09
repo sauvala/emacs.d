@@ -171,8 +171,6 @@ Configure Straight.el
 #+end_src
 
 ** Dashboard
-Check if condition is needed here when opening files:
-;:if ( < (length command-line-args) 2)
 #+begin_src emacs-lisp
     (use-package dashboard
       :preface
