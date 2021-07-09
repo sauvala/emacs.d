@@ -199,8 +199,9 @@ Check if condition is needed here when opening files:
                             (registers . 5))
           dashboard-init-info js/startup-time-message)
     (dashboard-setup-startup-hook)
-    :hook ((server-after-make-frame . dashboard-refresh-buffer)
-           (after-init . dashboard-refresh-buffer)))
+    :hook
+    ((server-after-make-frame . dashboard-refresh-buffer)
+     (after-init . dashboard-refresh-buffer)))
 #+end_src
 ** Improve scrolling
 #+begin_src emacs-lisp
