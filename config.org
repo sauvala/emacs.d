@@ -3,20 +3,10 @@
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 
 * Startup performance
+The default is 800 kilobytes. Measured in bytes.
 #+begin_src emacs-lisp
-  ;; The default is 800 kilobytes.  Measured in bytes.
   (setq gc-cons-threshold (* 50 1000 1000))
-  
-  ;; Profile emacs startup
-  (add-hook 'emacs-startup-hook
-            (lambda ()
-              (message "*** Emacs loaded in %s with %d garbage collections."
-                       (format "%.2f seconds"
-                               (float-time
-                                (time-subtract after-init-time before-init-time)))
-                       gcs-done)))
 #+end_src
-
 * Native compilation
 #+begin_src emacs-lisp
   (setq comp-async-report-warnings-errors nil)
@@ -184,6 +174,33 @@ Configure Straight.el
   (setq visible-bell t)
 #+end_src
 
+** Dashboard
+Check if condition is needed here when opening files:
+;:if ( < (length command-line-args) 2)
+#+begin_src emacs-lisp
+  (use-package dashboard
+    :preface
+    (setq js/startup-time-message
+          (let ((package-count (hash-table-size straight--profile-cache)))
+            (format "Emacs loaded in %s with %d packages and %d garbage collections."
+                    (format "%.2f seconds"
+                            (float-time
+                             (time-subtract after-init-time before-init-time)))
+                    package-count
+                    gcs-done)))
+    :init
+    (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*")))
+    :config
+    (setq dashboard-startup-banner 'logo
+          dashboard-projects-backend 'projectile
+          dashboard-set-heading-icons t
+          dashboard-set-file-icons t
+          dashboard-center-content t
+          dashboard-init-info js/startup-time-message)
+    (dashboard-setup-startup-hook)
+    :hook ((server-after-make-frame . dashboard-refresh-buffer)
+           (after-init . dashboard-refresh-buffer)))
+#+end_src
 ** Improve scrolling
 #+begin_src emacs-lisp
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
