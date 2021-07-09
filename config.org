@@ -55,6 +55,13 @@ Configure Straight.el
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+* Setup path from shell
+#+begin_src emacs-lisp
+  (use-package exec-path-from-shell
+        :config
+        (when (memq window-system '(mac ns x))
+          (exec-path-from-shell-initialize)))
+#+end_src
 * Keyboard bindings
 ** Mac keyboard + Finnish layout 
 #+begin_src emacs-lisp

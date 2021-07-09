@@ -37,6 +37,11 @@
 
 (server-start)
 
+(use-package exec-path-from-shell
+      :config
+      (when (memq window-system '(mac ns x))
+        (exec-path-from-shell-initialize)))
+
 (setq mac-option-modifier nil
       mac-command-modifier 'meta
       x-select-enable-clipboard t)
