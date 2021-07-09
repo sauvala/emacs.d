@@ -56,7 +56,7 @@ Configure Straight.el
   (server-start)
 #+end_src
 * Keyboard bindings
-** Mac keyboard + Finnish layout changes
+** Mac keyboard + Finnish layout 
 #+begin_src emacs-lisp
   (setq mac-option-modifier nil
         mac-command-modifier 'meta
