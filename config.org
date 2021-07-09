@@ -66,10 +66,6 @@ Configure Straight.el
 #+begin_src emacs-lisp
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
-** M-x tuning
-#+begin_src emacs-lisp
-  (setq ivy-initial-inputs-alist nil)
-#+end_src
 ** Evil
 #+begin_src emacs-lisp
   (defun js/evil-hook ()
