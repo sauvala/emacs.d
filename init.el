@@ -43,8 +43,6 @@
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 
-(setq ivy-initial-inputs-alist nil)
-
 (defun js/evil-hook ()
   (dolist (mode '(custom-mode
                   eshell-mode
