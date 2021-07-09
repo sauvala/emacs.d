@@ -319,17 +319,17 @@ folder, otherwise delete a word"
 
 (use-package embark
   :bind (("C-S-a" . embark-act)
-	 ("C-S-w" . embark-dwim)
-	 :map minibuffer-local-map
-	 ("C-d" . embark-act))
+         ("C-S-w" . embark-dwim)
+         :map minibuffer-local-map
+         ("C-d" . embark-act))
   :config
 
   ;; Show Embark actions via which-key
   (setq embark-action-indicator
-	(lambda (map _target)
-	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
-	  #'which-key--hide-popup-ignore-command)
-	embark-become-indicator embark-action-indicator))
+        (lambda (map _target)
+          (which-key--show-keymap "Embark" map nil nil 'no-paging)
+          #'which-key--hide-popup-ignore-command)
+        embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :after (embark consult)
