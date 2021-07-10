@@ -515,6 +515,10 @@ https://github.com/oantolin/embark
     :after treemacs)
 #+end_src
 ** Languages
+*** Clojure
+#+begin_src emacs-lisp
+  (use-package cider)
+#+end_src
 *** Javascript
 Use nvm
 #+begin_src emacs-lisp
@@ -569,29 +573,33 @@ Javascript and Typescript
 #+end_src
 *** LSP
 #+begin_src emacs-lisp
-  (use-package lsp-mode
-    :commands lsp
-    :hook (python-mode . lsp)
-    :bind (:map lsp-mode-map
-           ("TAB" . completion-at-point))
-    :custom (lsp-headerline-breadcrumb-enable nil))
-  
-  (js/leader-key-def
-    "l"  '(:ignore t :which-key "lsp")
-    "ld" 'xref-find-definitions
-    "lr" 'xref-find-references
-    "ln" 'lsp-ui-find-next-reference
-    "lp" 'lsp-ui-find-prev-reference
-    "ls" 'counsel-imenu
-    "le" 'lsp-ui-flycheck-list
-    "lS" 'lsp-ui-sideline-mode
-    "lX" 'lsp-execute-code-action)
-  
-  (use-package lsp-ui
-    :after lsp-mode
-    :hook (lsp-mode . lsp-ui-mode)
-    :config
-    (setq lsp-ui-doc-position 'bottom))
+      (use-package lsp-mode
+        :commands lsp
+        :hook
+        ((clojure-mode clojurescript-mode clojurec-mode python-mode) . lsp)
+        :bind
+        (:map lsp-mode-map ("TAB" . completion-at-point))
+        :custom
+        (lsp-headerline-breadcrumb-enable nil)
+        (lsp-lens-enable t)
+        (lsp-idle-delay 0.500))
+      
+      (js/leader-key-def
+        "l"  '(:ignore t :which-key "lsp")
+        "ld" 'xref-find-definitions
+        "lr" 'xref-find-references
+        "ln" 'lsp-ui-find-next-reference
+        "lp" 'lsp-ui-find-prev-reference
+        "ls" 'counsel-imenu
+        "le" 'lsp-ui-flycheck-list
+        "lS" 'lsp-ui-sideline-mode
+        "lX" 'lsp-execute-code-action)
+      
+      (use-package lsp-ui
+        :after lsp-mode
+        :hook (lsp-mode . lsp-ui-mode)
+        :config
+        (setq lsp-ui-doc-position 'bottom))
 #+end_src
 
 **** Python

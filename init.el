@@ -401,6 +401,8 @@ folder, otherwise delete a word"
 (use-package treemacs-projectile
   :after treemacs)
 
+(use-package cider)
+
 (use-package nvm
   :defer t)
 
@@ -449,10 +451,14 @@ folder, otherwise delete a word"
 
 (use-package lsp-mode
   :commands lsp
-  :hook (python-mode . lsp)
-  :bind (:map lsp-mode-map
-         ("TAB" . completion-at-point))
-  :custom (lsp-headerline-breadcrumb-enable nil))
+  :hook
+  ((clojure-mode clojurescript-mode clojurec-mode python-mode) . lsp)
+  :bind
+  (:map lsp-mode-map ("TAB" . completion-at-point))
+  :custom
+  (lsp-headerline-breadcrumb-enable nil)
+  (lsp-lens-enable t)
+  (lsp-idle-delay 0.500))
 
 (js/leader-key-def
   "l"  '(:ignore t :which-key "lsp")
