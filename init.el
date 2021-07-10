@@ -368,15 +368,15 @@ folder, otherwise delete a word"
 
 (use-package projectile
   :diminish projectile-mode
-  :config (projectile-mode)
   :demand t
   :bind ("C-M-p" . projectile-find-file)
   :bind-keymap
   ("C-c p" . projectile-command-map)
-  :init
-  (when (file-directory-p "~/Dev")
-    (setq projectile-project-search-path '("~/Dev" "~/Dev/clojure"))
-    (projectile-add-known-project "~/.emacs.default")))
+  :config
+  (projectile-mode)
+  :custom
+  (projectile-auto-discover nil)
+  (projectile-ignored-projects '("~/")))
 
 (use-package consult-projectile
   :straight (consult-projectile :type git :host gitlab :repo "OlMon/consult-projectile" :branch "master"))
@@ -458,6 +458,7 @@ folder, otherwise delete a word"
   (:map lsp-mode-map ("TAB" . completion-at-point))
   :custom
   (lsp-headerline-breadcrumb-enable nil)
+  (lsp-modeline-code-actions-enable nil)
   (lsp-lens-enable t)
   (lsp-idle-delay 0.500))
 
