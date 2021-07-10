@@ -500,6 +500,20 @@ https://github.com/oantolin/embark
     "pd"  'projectile-dired)
 #+end_src
 
+** Treemacs
+#+begin_src emacs-lisp
+  (use-package treemacs
+    :config
+    (js/leader-key-def
+      "t"   '(:ignore t :which-key "treemacs")
+      "tt"  'treemacs))
+
+  (use-package treemacs-evil
+    :after treemacs)
+
+  (use-package treemacs-projectile
+    :after treemacs)
+#+end_src
 ** Languages
 *** Javascript
 Use nvm
@@ -583,7 +597,10 @@ Javascript and Typescript
 **** Python
 #+begin_src emacs-lisp
   (use-package lsp-pyright
-    :after lsp-mode)
+    :after lsp-mode
+    :hook (python-mode . (lambda ()
+                        (require 'lsp-pyright)
+                        (lsp-deferred))))
 #+end_src
 **** dap-mode
 #+begin_src emacs-lisp

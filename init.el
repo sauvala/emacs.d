@@ -389,6 +389,18 @@ folder, otherwise delete a word"
   "pc"  'projectile-compile-project
   "pd"  'projectile-dired)
 
+(use-package treemacs
+  :config
+  (js/leader-key-def
+    "t"   '(:ignore t :which-key "treemacs")
+    "tt"  'treemacs))
+
+(use-package treemacs-evil
+  :after treemacs)
+
+(use-package treemacs-projectile
+  :after treemacs)
+
 (use-package nvm
   :defer t)
 
@@ -460,7 +472,10 @@ folder, otherwise delete a word"
   (setq lsp-ui-doc-position 'bottom))
 
 (use-package lsp-pyright
-  :after lsp-mode)
+  :after lsp-mode
+  :hook (python-mode . (lambda ()
+                      (require 'lsp-pyright)
+                      (lsp-deferred))))
 
 (use-package dap-mode
   ;; Uncomment the config below if you want all UI panes to be hidden by default!
