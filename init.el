@@ -1,4 +1,5 @@
 (setq gc-cons-threshold (* 50 1000 1000))
+(setq read-process-output-max (* 1024 1024))
 
 (setq comp-async-report-warnings-errors nil)
 
@@ -620,4 +621,4 @@ folder, otherwise delete a word"
 ;;   (js/leader-key-def
 ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 
-(setq gc-cons-threshold (* 2 1000 1000))
+(setq gc-cons-threshold 100000000 )

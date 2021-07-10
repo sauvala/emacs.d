@@ -2,10 +2,13 @@
 #+AUTHOR: Janne Sauvala
 #+PROPERTY: header-args:emacs-lisp :tangle init.el
 
-* Startup performance
-The default is 800 kilobytes. Measured in bytes.
+* Startup and runtime performance
+The gdefault gc cons threshold is 800 kilobytes. Measured in bytes.
+Read process output max is taken from LSP performance guide. I could modify it only when lsp-mode is activated.
+Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
   (setq gc-cons-threshold (* 50 1000 1000))
+  (setq read-process-output-max (* 1024 1024))
 #+end_src
 * Native compilation
 #+begin_src emacs-lisp
@@ -777,7 +780,8 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
 #+end_src
 
 * Runtime performance
-Make gc pauses faster by decreasing the threshold.
+Make gc pauses faster by decreasing the threshold. Try with higher value, old value was (* 2 1000 1000).
+Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold (* 2 1000 1000))
+  (setq gc-cons-threshold 100000000 )
 #+end_src
