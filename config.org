@@ -831,6 +831,11 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
   ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 #+end_src
 
+* Footer
+:PROPERTIES:
+:TOC:      :ignore this
+:END:
+Update TOC on save
 # Local Variables:
 # before-save-hook: org-make-toc
 # End: 
