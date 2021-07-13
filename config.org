@@ -2,6 +2,69 @@
 #+AUTHOR: Janne Sauvala
 #+PROPERTY: header-args:emacs-lisp :results silent :tangle init.el
 
+* Table of contents
+:PROPERTIES:
+:TOC:      :include all :ignore this
+:END:
+:CONTENTS:
+- [[#add-lexical-binding-to-generated-file][Add lexical binding to generated file]]
+- [[#native-compilation][Native compilation]]
+- [[#auto-update-packages][Auto update packages]]
+- [[#keep-emacsd-clean][Keep .emacs.d clean]]
+- [[#server-mode][Server mode]]
+- [[#setup-path-from-shell][Setup path from shell]]
+- [[#keyboard-bindings][Keyboard bindings]]
+  - [[#mac-keyboard--finnish-layout][Mac keyboard + Finnish layout]]
+  - [[#esc-cancels-all][ESC cancels all]]
+  - [[#evil][Evil]]
+  - [[#which-key][which-key]]
+  - [[#leader-bindings-with-generalel][Leader bindings with general.el]]
+  - [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
+  - [[#custom-keybindings][Custom keybindings]]
+- [[#general-configuration][General configuration]]
+  - [[#window-size][Window size]]
+  - [[#dashboard][Dashboard]]
+  - [[#improve-scrolling][Improve scrolling]]
+  - [[#line-numbers][Line numbers]]
+  - [[#theme][Theme]]
+  - [[#font][Font]]
+  - [[#emojis-in-buffers][Emojis in buffers]]
+  - [[#doom-modeline][Doom modeline]]
+  - [[#mode-diminishing][Mode diminishing]]
+  - [[#recent-files][Recent files]]
+  - [[#restarting-and-quitting-emacs][Restarting and quitting Emacs]]
+- [[#completion][Completion]]
+  - [[#vertico][Vertico]]
+  - [[#corfu][Corfu]]
+  - [[#save-minibuffer-history][Save minibuffer history]]
+  - [[#completion-metadata-with-marginalia][Completion metadata with Marginalia]]
+  - [[#improve-completions][Improve completions]]
+    - [[#orderless][Orderless]]
+    - [[#consult][Consult]]
+    - [[#embark][Embark]]
+- [[#development][Development]]
+  - [[#magit][Magit]]
+  - [[#projectile][Projectile]]
+  - [[#treemacs][Treemacs]]
+  - [[#languages][Languages]]
+    - [[#clojure][Clojure]]
+    - [[#javascript][Javascript]]
+    - [[#lsp][LSP]]
+      - [[#python][Python]]
+      - [[#dap-mode][dap-mode]]
+  - [[#productivity][Productivity]]
+    - [[#rainbow-delimiter][Rainbow delimiter]]
+    - [[#rainbow-mode][Rainbow mode]]
+    - [[#flycheck][Flycheck]]
+- [[#org-mode][Org mode]]
+  - [[#org-config][Org config]]
+  - [[#block-templates][Block templates]]
+  - [[#visual-fill][Visual fill]]
+  - [[#fonts-and-bullets][Fonts and bullets]]
+  - [[#add-toc-automatically][Add TOC automatically]]
+  - [[#pomodoro][Pomodoro]]
+:END:
+
 * Add lexical binding to generated file
 #+begin_src emacs-lisp
   ;;; init.el -*- lexical-binding: t ; eval: (view-mode -1) -*-
@@ -753,6 +816,11 @@ Javascript and Typescript
   ;;(set-face-attribute 'org-column-title nil :background nil)
 #+end_src
 
+** Add TOC automatically
+#+begin_src emacs-lisp
+  (use-package org-make-toc
+    :hook (org-mode . org-make-toc-mode))
+#+end_src
 ** Pomodoro
 Has some weird bug when installed. When quiting Emacs I see an error "symbol's function definition is void: org-clocking-buffer" 
 #+begin_src emacs-lisp
@@ -763,3 +831,6 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
   ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 #+end_src
 
+# Local Variables:
+# before-save-hook: org-make-toc
+# End: 

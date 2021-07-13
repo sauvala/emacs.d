@@ -589,6 +589,9 @@ folder, otherwise delete a word"
 ;;(set-face-attribute 'org-column nil :background nil)
 ;;(set-face-attribute 'org-column-title nil :background nil)
 
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
+
 ;; (use-package org-pomodoro
 ;;   :after org
 ;;   :config
