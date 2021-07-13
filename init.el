@@ -1,4 +1,5 @@
-(setq gc-cons-threshold (* 50 1000 1000))
+;;; -*- lexical-binding: t -*-
+
 (setq read-process-output-max (* 1024 1024))
 
 (setq comp-async-report-warnings-errors nil)
@@ -563,11 +564,7 @@ folder, otherwise delete a word"
   (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
   (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
-
-  (org-babel-do-load-languages
-    'org-babel-load-languages
-    '((emacs-lisp . t))))
+  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup))
 
 ;; This is needed as of Org 9.2
 (require 'org-tempo)

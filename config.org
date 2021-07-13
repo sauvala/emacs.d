@@ -711,11 +711,7 @@ Javascript and Typescript
     (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
   
     (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
-  
-    (org-babel-do-load-languages
-      'org-babel-load-languages
-      '((emacs-lisp . t))))
+    (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup))
  #+end_src
 
 ** Block templates
@@ -741,7 +737,6 @@ Javascript and Typescript
     (visual-fill-column-mode 1))
   
   (use-package visual-fill-column
-    :defer t
     :hook (org-mode . js/org-mode-visual-fill))
 #+end_src
 
@@ -792,5 +787,8 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
 Make gc pauses faster by decreasing the threshold. Try with higher value, old value was (* 2 1000 1000).
 Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold 100000000 )
+  (add-hook 'emacs-startup-hook
+    (lambda ()
+      (setq gc-cons-threshold 16777216 ; 16mb
+            gc-cons-percentage 0.1)))
 #+end_src
