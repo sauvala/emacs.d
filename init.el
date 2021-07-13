@@ -4,8 +4,9 @@
 
 (use-package auto-package-update
   :config
-  (setq auto-package-update-delete-old-versions t)
-  (setq auto-package-update-hide-results t)
+  (setq auto-package-update-delete-old-versions t
+        auto-package-update-hide-results t
+        auto-package-update-prompt-before-update t)
   (auto-package-update-maybe))
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d

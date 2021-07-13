@@ -45,6 +45,7 @@
 
 (setq straight-use-package-by-default t
       use-package-always-defer t
+      use-package-always-ensure t
       straight-cache-autoloads t)
 
 (defvar bootstrap-version)
