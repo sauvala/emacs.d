@@ -23,6 +23,7 @@ And https://github.com/meatcar/emacs.d
               (setq gc-cons-threshold js/gc-cons-threshold
                     gc-cons-percentage 0.1)))
 #+end_src
+
 ** Tune for minibuffer
 #+begin_src emacs-lisp
   (defun js/defer-garbage-collection-h ()
@@ -35,12 +36,14 @@ And https://github.com/meatcar/emacs.d
   (add-hook 'minibuffer-setup-hook #'js/defer-garbage-collection-h)
   (add-hook 'minibuffer-exit-hook #'js/restore-garbage-collection-h)
 #+end_src
+
 * Improve IO
 Read process output max is taken from LSP performance guide. I could modify it only when lsp-mode is activated.
 Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
   (setq read-process-output-max 1048576)
 #+end_src
+
 * Defer compilation
 #+begin_src emacs-lisp
   (defvar comp-deferred-compliation)
@@ -104,6 +107,7 @@ Configure Straight.el
   ;; Load the helper package for commands like `straight-x-clean-unused-repos'
   (require 'straight-x)
 #+end_src
+
 * Benchmarking
 #+begin_src emacs-lisp
   (use-package esup
@@ -119,6 +123,7 @@ Configure Straight.el
     :hook
     (after-init . benchmark-init/deactivate))
 #+end_src
+
 * GC magic hack
 #+begin_src emacs-lisp
   (use-package gcmh
