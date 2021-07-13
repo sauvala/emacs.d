@@ -211,12 +211,10 @@
 (use-package doom-modeline
   :after eshell     ;; Make sure it gets hooked after eshell
   :hook (after-init . doom-modeline-mode)
-  :custom-face
-  (mode-line ((t (:height 0.85))))
-  (mode-line-inactive ((t (:height 0.85))))
+  ;:custom-face
+  ;(mode-line ((t (:height 0.85))))
+  ;(mode-line-inactive ((t (:height 0.85))))
   :custom
-  (doom-modeline-height 15)
-  (doom-modeline-bar-width 6)
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
   (doom-modeline-mu4e nil)
