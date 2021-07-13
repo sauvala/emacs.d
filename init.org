@@ -232,6 +232,7 @@
     "wm" '(toggle-frame-maximized :which-key "maxized")
     "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
 #+end_src
+
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
