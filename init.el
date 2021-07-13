@@ -17,10 +17,15 @@
   (load bootstrap-file nil 'nomessage))
 
 (straight-use-package 'use-package)
-(setq straight-use-package-by-default t)
+(setq straight-use-package-by-default t
+      use-package-always-defer t)
 
 ;; Load the helper package for commands like `straight-x-clean-unused-repos'
 (require 'straight-x)
+
+;(use-package benchmark-init
+;  :hook
+;  (after-init . benchmark-init/deactivate))
 
 ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
 (setq user-emacs-directory (expand-file-name "~/.cache/emacs/")
@@ -70,6 +75,7 @@
   (global-undo-tree-mode 1))
 
 (use-package evil
+  :demand t
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -90,6 +96,7 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-collection
+  :demand t
   :after evil
   ;:init
   ;(setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
@@ -135,6 +142,7 @@
 (setq visible-bell t)
 
 (use-package dashboard
+  :demand t
   :preface
   (setq js/startup-time-message
         (let ((package-count (hash-table-size straight--profile-cache)))
@@ -177,8 +185,8 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(use-package spacegray-theme :defer t)
-(use-package doom-themes :defer t)
+(use-package spacegray-theme)
+(use-package doom-themes)
 (load-theme 'doom-one t)
 (doom-themes-visual-bell-config)
 
@@ -304,6 +312,7 @@ folder, otherwise delete a word"
   (marginalia-mode))
 
 (use-package orderless
+  :demand t
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
@@ -314,7 +323,6 @@ folder, otherwise delete a word"
     (projectile-project-root)))
 
 (use-package consult
-  :demand t
   :bind (("C-s" . consult-line)
          ("C-M-l" . consult-imenu)
          :map minibuffer-local-map
@@ -368,7 +376,6 @@ folder, otherwise delete a word"
 
 (use-package projectile
   :diminish projectile-mode
-  :demand t
   :bind ("C-M-p" . projectile-find-file)
   :bind-keymap
   ("C-c p" . projectile-command-map)
@@ -391,6 +398,7 @@ folder, otherwise delete a word"
   "pd"  'projectile-dired)
 
 (use-package treemacs
+  :defer 2
   :config
   (js/leader-key-def
     "t"   '(:ignore t :which-key "treemacs")
@@ -404,8 +412,7 @@ folder, otherwise delete a word"
 
 (use-package cider)
 
-(use-package nvm
-  :defer t)
+(use-package nvm)
 
 (use-package typescript-mode
   :mode "\\.ts\\'"
@@ -507,7 +514,6 @@ folder, otherwise delete a word"
   :hook (prog-mode . rainbow-delimiters-mode))
 
 (use-package rainbow-mode
-  :defer t
   :hook (org-mode
          emacs-lisp-mode
          web-mode
@@ -515,7 +521,6 @@ folder, otherwise delete a word"
          js2-mode))
 
 (use-package flycheck
-  :defer t
   :hook (lsp-mode . flycheck-mode))
 
 ;; Turn on indentation and auto-fill mode for Org files
@@ -528,7 +533,6 @@ folder, otherwise delete a word"
              (diminish org-indent-mode))
 
 (use-package org
-  :defer t
   :hook (org-mode . js/org-mode-setup)
   :config
   (setq org-ellipsis " ▾"
@@ -583,7 +587,6 @@ folder, otherwise delete a word"
   (visual-fill-column-mode 1))
 
 (use-package visual-fill-column
-  :defer t
   :hook (org-mode . js/org-mode-visual-fill))
 
 ;; Increase the size of various headings
@@ -622,4 +625,7 @@ folder, otherwise delete a word"
 ;;   (js/leader-key-def
 ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 
-(setq gc-cons-threshold 100000000 )
+(add-hook 'emacs-startup-hook
+  (lambda ()
+    (setq gc-cons-threshold 16777216 ; 16mb
+          gc-cons-percentage 0.1)))

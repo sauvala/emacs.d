@@ -1,13 +1,15 @@
 #+TITLE: Emacs configuration
 #+AUTHOR: Janne Sauvala
-#+PROPERTY: header-args:emacs-lisp :tangle init.el
+#+PROPERTY: header-args:emacs-lisp :results silent :tangle init.el
 
-* Startup and runtime performance
-The gdefault gc cons threshold is 800 kilobytes. Measured in bytes.
+* Add lexical binding to generated file
+#+begin_src emacs-lisp
+  ;;; -*- lexical-binding: t -*-
+#+end_src
+* Runtime performance
 Read process output max is taken from LSP performance guide. I could modify it only when lsp-mode is activated.
 Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
-  (setq gc-cons-threshold (* 50 1000 1000))
   (setq read-process-output-max (* 1024 1024))
 #+end_src
 * Native compilation
@@ -18,24 +20,31 @@ Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode p
 * Package management
 Configure Straight.el
 #+begin_src emacs-lisp
-  (defvar bootstrap-version)
-  (let ((bootstrap-file
-         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-        (bootstrap-version 5))
-    (unless (file-exists-p bootstrap-file)
-      (with-current-buffer
-          (url-retrieve-synchronously
-           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-           'silent 'inhibit-cookies)
-        (goto-char (point-max))
-        (eval-print-last-sexp)))
-    (load bootstrap-file nil 'nomessage))
-  
-  (straight-use-package 'use-package)
-  (setq straight-use-package-by-default t)
-  
-  ;; Load the helper package for commands like `straight-x-clean-unused-repos'
-  (require 'straight-x)
+    (defvar bootstrap-version)
+    (let ((bootstrap-file
+           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+          (bootstrap-version 5))
+      (unless (file-exists-p bootstrap-file)
+        (with-current-buffer
+            (url-retrieve-synchronously
+             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+             'silent 'inhibit-cookies)
+          (goto-char (point-max))
+          (eval-print-last-sexp)))
+      (load bootstrap-file nil 'nomessage))
+    
+    (straight-use-package 'use-package)
+    (setq straight-use-package-by-default t
+          use-package-always-defer t)
+    
+    ;; Load the helper package for commands like `straight-x-clean-unused-repos'
+    (require 'straight-x)
+#+end_src
+* Benchmark initialisation
+#+begin_src emacs-lisp
+  ;(use-package benchmark-init
+  ;  :hook
+  ;  (after-init . benchmark-init/deactivate))
 #+end_src
 * Keep .emacs.d clean
 #+begin_src emacs-lisp
@@ -99,6 +108,7 @@ Configure Straight.el
     (global-undo-tree-mode 1))
   
   (use-package evil
+    :demand t
     :init
     (setq evil-want-integration t)
     (setq evil-want-keybinding nil)
@@ -119,6 +129,7 @@ Configure Straight.el
     (evil-set-initial-state 'dashboard-mode 'normal))
   
   (use-package evil-collection
+    :demand t
     :after evil
     ;:init
     ;(setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
@@ -183,6 +194,7 @@ Configure Straight.el
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
+    :demand t
     :preface
     (setq js/startup-time-message
           (let ((package-count (hash-table-size straight--profile-cache)))
@@ -234,8 +246,8 @@ Configure Straight.el
 ** Theme
 *** Doom
 #+begin_src emacs-lisp
-  (use-package spacegray-theme :defer t)
-  (use-package doom-themes :defer t)
+  (use-package spacegray-theme)
+  (use-package doom-themes)
   (load-theme 'doom-one t)
   (doom-themes-visual-bell-config)
 #+end_src
@@ -400,6 +412,7 @@ https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system
 https://github.com/oantolin/orderless
 #+begin_src emacs-lisp
   (use-package orderless
+    :demand t
     :init
     (setq completion-styles '(orderless)
           completion-category-defaults nil
@@ -415,7 +428,6 @@ https://github.com/minad/consult
       (projectile-project-root)))
   
   (use-package consult
-    :demand t
     :bind (("C-s" . consult-line)
            ("C-M-l" . consult-imenu)
            :map minibuffer-local-map
@@ -480,7 +492,6 @@ https://github.com/oantolin/embark
 #+begin_src emacs-lisp
   (use-package projectile
     :diminish projectile-mode
-    :demand t
     :bind ("C-M-p" . projectile-find-file)
     :bind-keymap
     ("C-c p" . projectile-command-map)
@@ -506,14 +517,15 @@ https://github.com/oantolin/embark
 ** Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
+    :defer 2
     :config
     (js/leader-key-def
       "t"   '(:ignore t :which-key "treemacs")
       "tt"  'treemacs))
-
+  
   (use-package treemacs-evil
     :after treemacs)
-
+  
   (use-package treemacs-projectile
     :after treemacs)
 #+end_src
@@ -525,8 +537,7 @@ https://github.com/oantolin/embark
 *** Javascript
 Use nvm
 #+begin_src emacs-lisp
-  (use-package nvm
-    :defer t)
+  (use-package nvm)
 #+end_src
 
 Javascript and Typescript
@@ -644,7 +655,6 @@ Javascript and Typescript
 *** Rainbow mode
 #+begin_src emacs-lisp
   (use-package rainbow-mode
-    :defer t
     :hook (org-mode
            emacs-lisp-mode
            web-mode
@@ -655,7 +665,6 @@ Javascript and Typescript
 *** Flycheck
 #+begin_src emacs-lisp
   (use-package flycheck
-    :defer t
     :hook (lsp-mode . flycheck-mode))
 #+end_src
 * Org mode
@@ -672,7 +681,6 @@ Javascript and Typescript
                (diminish org-indent-mode))
   
   (use-package org
-    :defer t
     :hook (org-mode . js/org-mode-setup)
     :config
     (setq org-ellipsis " ▾"
