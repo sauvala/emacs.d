@@ -116,6 +116,12 @@
       "fr"  '(consult-recent-file :which-key "recent files")
       "fR"  '(revert-buffer :which-key "revert file"))
 
+(when window-system (set-frame-size (selected-frame) 129 80))
+(js/leader-key-def
+  "w"  '(:ignore t :which-key "window")
+  "wm" '(toggle-frame-maximized :which-key "maxized")
+  "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
+
 (use-package dashboard
   :demand t
   :preface

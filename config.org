@@ -161,6 +161,14 @@
 #+end_src
 
 * General configuration
+** Window size
+#+begin_src emacs-lisp
+  (when window-system (set-frame-size (selected-frame) 129 80))
+  (js/leader-key-def
+    "w"  '(:ignore t :which-key "window")
+    "wm" '(toggle-frame-maximized :which-key "maxized")
+    "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
+#+end_src
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
