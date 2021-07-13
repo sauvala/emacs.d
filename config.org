@@ -4,42 +4,13 @@
 
 * Add lexical binding to generated file
 #+begin_src emacs-lisp
-  ;;; -*- lexical-binding: t -*-
-#+end_src
-* Runtime performance
-Read process output max is taken from LSP performance guide. I could modify it only when lsp-mode is activated.
-Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
-#+begin_src emacs-lisp
-  (setq read-process-output-max (* 1024 1024))
+  ;;; init.el -*- lexical-binding: t ; eval: (view-mode -1) -*-
 #+end_src
 * Native compilation
 #+begin_src emacs-lisp
   (setq comp-async-report-warnings-errors nil)
 #+end_src
 
-* Package management
-Configure Straight.el
-#+begin_src emacs-lisp
-    (defvar bootstrap-version)
-    (let ((bootstrap-file
-           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
-          (bootstrap-version 5))
-      (unless (file-exists-p bootstrap-file)
-        (with-current-buffer
-            (url-retrieve-synchronously
-             "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
-             'silent 'inhibit-cookies)
-          (goto-char (point-max))
-          (eval-print-last-sexp)))
-      (load bootstrap-file nil 'nomessage))
-    
-    (straight-use-package 'use-package)
-    (setq straight-use-package-by-default t
-          use-package-always-defer t)
-    
-    ;; Load the helper package for commands like `straight-x-clean-unused-repos'
-    (require 'straight-x)
-#+end_src
 * Benchmark initialisation
 #+begin_src emacs-lisp
   ;(use-package benchmark-init
@@ -153,6 +124,7 @@ Configure Straight.el
 ** Leader bindings with general.el
 #+begin_src emacs-lisp
   (use-package general
+    :demand t
     :config
     (general-evil-setup t)
   
@@ -181,16 +153,6 @@ Configure Straight.el
 #+end_src
 
 * General configuration
-** User interface
-#+begin_src emacs-lisp
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-  (menu-bar-mode -1)
-  (tooltip-mode -1)
-  (set-fringe-mode 10)
-  (setq visible-bell t)
-#+end_src
-
 ** Dashboard
 #+begin_src emacs-lisp
   (use-package dashboard
@@ -457,7 +419,7 @@ https://github.com/oantolin/embark
   
   (use-package embark-consult
     :after (embark consult)
-    :demand t ; only necessary if you have the hook below
+    ;:demand t ; only necessary if you have the hook below
     ;; if you want to have consult previews as you move around an
     ;; auto-updating embark collect buffer
     :hook
@@ -783,12 +745,3 @@ Has some weird bug when installed. When quiting Emacs I see an error "symbol's f
   ;;     "op"  '(org-pomodoro :which-key "pomodoro")))
 #+end_src
 
-* Runtime performance
-Make gc pauses faster by decreasing the threshold. Try with higher value, old value was (* 2 1000 1000).
-Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
-#+begin_src emacs-lisp
-  (add-hook 'emacs-startup-hook
-    (lambda ()
-      (setq gc-cons-threshold 16777216 ; 16mb
-            gc-cons-percentage 0.1)))
-#+end_src
