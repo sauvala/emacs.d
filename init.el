@@ -231,7 +231,7 @@
     "q"   '(:ignore t :which-key "quit")
     "qq"  '(save-buffers-kill-emacs :which-key "quit emacs")
     "qR"  'restart-emacs
-    "qr"  'js/reload-init))
+    "qr"  '(js/reload-init :which-key "reload confs")))
 
 (defun js/minibuffer-backward-kill (arg)
   "When minibuffer is completing a file name delete up to parent

@@ -308,7 +308,7 @@ Run =all-the-icons-install-fonts= after installing this package
       "q"   '(:ignore t :which-key "quit")
       "qq"  '(save-buffers-kill-emacs :which-key "quit emacs")
       "qR"  'restart-emacs
-      "qr"  'js/reload-init))
+      "qr"  '(js/reload-init :which-key "reload confs")))
 #+end_src
 
 * Completion
