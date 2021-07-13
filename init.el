@@ -110,7 +110,6 @@
   :config (key-chord-mode 1))
 
 (js/leader-key-def
-      "r"   '(ivy-resume :which-key "ivy resume")
       "f"   '(:ignore t :which-key "files")
       "ff"  '(find-file :which-key "open file")
       "fs"  'save-buffer
