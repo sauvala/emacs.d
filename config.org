@@ -216,7 +216,6 @@
   #+end_src
   
 ** Theme
-*** Doom
 #+begin_src emacs-lisp
   (use-package spacegray-theme)
   (use-package doom-themes)
@@ -290,6 +289,23 @@
   (recentf-mode 1)
   (setq recentf-max-menu-items 25)
   (setq recentf-max-saved-items 25)
+#+end_src
+
+** Restarting Emacs
+#+begin_src emacs-lisp
+  (defun js/reload-init ()
+    "Reload init.el."
+    (interactive)
+    (message "Reloading init.el...")
+    (load user-init-file nil 'nomessage)
+    (message "Reloading init.el... done."))
+
+  (use-package restart-emacs
+    :general
+    (js/leader-key-def
+      "q"   '(:ignore t :which-key "exit")
+      "qR"  'restart-emacs
+      "qr"  'js/reload-init))
 #+end_src
 
 * Completion

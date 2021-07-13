@@ -219,6 +219,20 @@
 (setq recentf-max-menu-items 25)
 (setq recentf-max-saved-items 25)
 
+(defun js/reload-init ()
+  "Reload init.el."
+  (interactive)
+  (message "Reloading init.el...")
+  (load user-init-file nil 'nomessage)
+  (message "Reloading init.el... done."))
+
+(use-package restart-emacs
+  :general
+  (js/leader-key-def
+    "q"   '(:ignore t :which-key "exit")
+    "qR"  'restart-emacs
+    "qr"  'js/reload-init))
+
 (defun js/minibuffer-backward-kill (arg)
   "When minibuffer is completing a file name delete up to parent
 folder, otherwise delete a word"
