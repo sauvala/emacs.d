@@ -166,18 +166,6 @@
 (load-theme 'doom-one t)
 (doom-themes-visual-bell-config)
 
-;; (straight-use-package
-;;  '(nano-emacs :type git
-;;               :host github
-;;               :repo "rougier/nano-emacs"))
-;; (require 'nano-theme-dark)
-;; (require 'nano-faces)
-;; (nano-faces)
-;; (require 'nano-theme)
-;; (nano-theme)
-;; (require 'nano-modeline)
-;; (require -nanp-splash)
-
 (defvar efs/default-font-size 150)
 (defvar efs/default-variable-font-size 150)
 
@@ -421,17 +409,13 @@ folder, otherwise delete a word"
   (add-hook 'js2-mode-hook #'js/set-js-indentation)
   (add-hook 'json-mode-hook #'js/set-js-indentation))
 
-
 (use-package apheleia
   :config
   (apheleia-global-mode +1))
 
 (use-package prettier-js
   :hook ((js2-mode . prettier-js-mode)
-          (typescript-mode . prettier-js-mode))
-  ;:config
-  ;(setq prettier-js-show-errors nil)
-  )
+          (typescript-mode . prettier-js-mode)))
 
 (use-package lsp-mode
   :commands lsp

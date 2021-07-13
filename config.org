@@ -6,6 +6,7 @@
 #+begin_src emacs-lisp
   ;;; init.el -*- lexical-binding: t ; eval: (view-mode -1) -*-
 #+end_src
+
 * Native compilation
 #+begin_src emacs-lisp
   (setq comp-async-report-warnings-errors nil)
@@ -20,6 +21,7 @@
           auto-package-update-prompt-before-update t)
     (auto-package-update-maybe))
 #+end_src
+
 * Keep .emacs.d clean
 #+begin_src emacs-lisp
   ;; Change the user-emacs-directory to keep unwanted things out of ~/.emacs.d
@@ -41,6 +43,7 @@
 #+begin_src emacs-lisp
   (server-start)
 #+end_src
+
 * Setup path from shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
@@ -48,6 +51,7 @@
         (when (memq window-system '(mac ns x))
           (exec-path-from-shell-initialize)))
 #+end_src
+
 * Keyboard bindings
 ** Mac keyboard + Finnish layout 
 #+begin_src emacs-lisp
@@ -55,10 +59,12 @@
         mac-command-modifier 'meta
         x-select-enable-clipboard t)
 #+end_src
+
 ** ESC cancels all
 #+begin_src emacs-lisp
   (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
 #+end_src
+
 ** Evil
 #+begin_src emacs-lisp
   (defun js/evil-hook ()
@@ -184,6 +190,7 @@
     (dashboard-setup-startup-hook)
     (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
 #+end_src
+
 ** Improve scrolling
 #+begin_src emacs-lisp
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -215,20 +222,6 @@
   (use-package doom-themes)
   (load-theme 'doom-one t)
   (doom-themes-visual-bell-config)
-#+end_src
-*** Nano
-#+begin_src emacs-lisp
-  ;; (straight-use-package
-  ;;  '(nano-emacs :type git
-  ;;               :host github
-  ;;               :repo "rougier/nano-emacs"))
-  ;; (require 'nano-theme-dark)
-  ;; (require 'nano-faces)
-  ;; (nano-faces)
-  ;; (require 'nano-theme)
-  ;; (nano-theme)
-  ;; (require 'nano-modeline)
-  ;; (require -nanp-splash)
 #+end_src
 
 ** Font
@@ -427,6 +420,7 @@ https://github.com/oantolin/embark
     :hook
     (embark-collect-mode . consult-preview-at-point-mode))
 #+end_src
+
 * Development
 ** Magit
 #+begin_src emacs-lisp
@@ -494,11 +488,13 @@ https://github.com/oantolin/embark
   (use-package treemacs-projectile
     :after treemacs)
 #+end_src
+
 ** Languages
 *** Clojure
 #+begin_src emacs-lisp
   (use-package cider)
 #+end_src
+
 *** Javascript
 Use nvm
 #+begin_src emacs-lisp
@@ -538,18 +534,15 @@ Javascript and Typescript
     (add-hook 'js2-mode-hook #'js/set-js-indentation)
     (add-hook 'json-mode-hook #'js/set-js-indentation))
   
-  
   (use-package apheleia
     :config
     (apheleia-global-mode +1))
   
   (use-package prettier-js
     :hook ((js2-mode . prettier-js-mode)
-            (typescript-mode . prettier-js-mode))
-    ;:config
-    ;(setq prettier-js-show-errors nil)
-    )
+            (typescript-mode . prettier-js-mode)))
 #+end_src
+
 *** LSP
 #+begin_src emacs-lisp
   (use-package lsp-mode
@@ -590,6 +583,7 @@ Javascript and Typescript
                         (require 'lsp-pyright)
                         (lsp-deferred))))
 #+end_src
+
 **** dap-mode
 #+begin_src emacs-lisp
   (use-package dap-mode
@@ -610,6 +604,7 @@ Javascript and Typescript
       :prefix lsp-keymap-prefix
       "d" '(dap-hydra t :wk "debugger")))
 #+end_src
+
 ** Productivity 
 *** Rainbow delimiter
 #+begin_src emacs-lisp
@@ -632,6 +627,7 @@ Javascript and Typescript
   (use-package flycheck
     :hook (lsp-mode . flycheck-mode))
 #+end_src
+
 * Org mode
 ** Org config
 #+begin_src emacs-lisp
