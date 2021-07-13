@@ -377,7 +377,8 @@ folder, otherwise delete a word"
   :config
   (js/leader-key-def
     "t"   '(:ignore t :which-key "treemacs")
-    "tt"  'treemacs))
+    "tt"  'treemacs)
+  (setq treemacs-follow-mode t))
 
 (use-package treemacs-evil
   :after treemacs)
