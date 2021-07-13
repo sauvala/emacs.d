@@ -229,7 +229,8 @@
 (use-package restart-emacs
   :general
   (js/leader-key-def
-    "q"   '(:ignore t :which-key "exit")
+    "q"   '(:ignore t :which-key "quit")
+    "qq"  '(save-buffers-kill-emacs :which-key "quit emacs")
     "qR"  'restart-emacs
     "qr"  'js/reload-init))
 
