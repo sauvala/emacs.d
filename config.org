@@ -11,11 +11,13 @@
   (setq comp-async-report-warnings-errors nil)
 #+end_src
 
-* Benchmark initialisation
+* Auto update packages
 #+begin_src emacs-lisp
-  ;(use-package benchmark-init
-  ;  :hook
-  ;  (after-init . benchmark-init/deactivate))
+(use-package auto-package-update
+  :config
+  (setq auto-package-update-delete-old-versions t)
+  (setq auto-package-update-hide-results t)
+  (auto-package-update-maybe))
 #+end_src
 * Keep .emacs.d clean
 #+begin_src emacs-lisp
@@ -348,6 +350,7 @@ https://github.com/daviwil/dotfiles/blob/master/Emacs.org#completion-system
 ** Save minibuffer history
  #+begin_src emacs-lisp 
    (use-package savehist
+     :demand 
      :config
      (setq history-length 25)
      (savehist-mode 1))
