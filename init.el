@@ -189,18 +189,12 @@
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
 
-;; You must run (all-the-icons-install-fonts) one time after
-;; installing this package!
-
 (use-package minions
   :hook (doom-modeline-mode . minions-mode))
 
 (use-package doom-modeline
   :after eshell     ;; Make sure it gets hooked after eshell
   :hook (after-init . doom-modeline-mode)
-  ;:custom-face
-  ;(mode-line ((t (:height 0.85))))
-  ;(mode-line-inactive ((t (:height 0.85))))
   :custom
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
