@@ -35,13 +35,37 @@
   (lambda ()
     (setq file-name-handler-alist js--file-name-handler-alist)))
 
-(scroll-bar-mode -1)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(tooltip-mode -1)
+(push '(menu-bar-lines . 0)  default-frame-alist)
+(push '(tool-bar-lines . 0)  default-frame-alist)
+(push '(vertical-scroll-bars) default-frame-alist)
+(setq menu-bar-mode nil
+      tool-bar-mode nil
+      scroll-bar-mode nil)
 (set-fringe-mode 10)
 (setq visible-bell t
-      frame-inhibit-implied-resize t)
+      frame-inhibit-implied-resize t
+      initial-major-mode 'fundamental-mode)
+
+(defvar js/default-font-size 150)
+(defvar js/default-variable-font-size 150)
+(add-to-list 'default-frame-alist '(font . "JetBrains Mono"))
+
+(set-face-attribute 'default nil
+                    :font "JetBrains Mono"
+                    :weight 'light
+                    :height js/default-font-size)
+
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil
+                    :font "JetBrains Mono"
+                    :weight 'light
+                    :height js/default-font-size)
+
+;; Set the variable pitch face
+(set-face-attribute 'variable-pitch nil
+                    :font "Iosevka Aile"
+                    :height js/default-variable-font-size
+                    :weight 'light)
 
 (setq straight-use-package-by-default t
       use-package-always-defer t
@@ -67,7 +91,6 @@
 (require 'straight-x)
 
 (use-package esup
-  :demand t
   :commands esup)
 
 (use-package benchmark-init
@@ -80,6 +103,6 @@
   (after-init . benchmark-init/deactivate))
 
 (use-package gcmh
-  :demand t
+  :hook (emacs-startup . gcmh-mode)
   :config
   (gcmh-mode 1))

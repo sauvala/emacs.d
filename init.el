@@ -78,16 +78,41 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-collection
-  :demand t
+  ;:demand t
+  ;:defer 1
   :after evil
+  :init
+  (evil-collection-init) 
   ;:init
   ;(setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
   :custom
-  (evil-collection-outline-bind-tab-p nil)
-  :config
-  (setq evil-collection-mode-list
-        (remove 'lispy evil-collection-mode-list))
-  (evil-collection-init))
+  (dolist (mode '(anaconda-mode
+                  buff-menu
+                  calc
+                  comint
+                  company
+                  custom
+                  eldoc
+                  elisp-mode
+                  ert
+                  free-keys
+                  helm
+                  indent
+                  image
+                  kotlin-mode
+                  occur
+                  outline
+                  package-menu
+                  simple
+                  slime
+                  lispy))
+    (setq evil-collection-mode-list (delq mode evil-collection-mode-list)))
+  ;(evil-collection-outline-bind-tab-p nil)
+  ;:config
+  ;(setq evil-collection-mode-list
+  ;      (remove 'lispy evil-collection-mode-list))
+  ;(evil-collection-init)
+  )
 
 (use-package which-key
   :init (which-key-mode)
@@ -123,7 +148,7 @@
   "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
 
 (use-package dashboard
-  :demand t
+  ;:demand t
   :preface
   (setq js/startup-time-message
         (let ((package-count (hash-table-size straight--profile-cache)))
@@ -133,6 +158,8 @@
                            (time-subtract after-init-time before-init-time)))
                   package-count
                   gcs-done)))
+  :init
+  (dashboard-setup-startup-hook)
   :config
   (setq dashboard-startup-banner 'logo
         dashboard-projects-backend 'projectile
@@ -171,36 +198,16 @@
 (load-theme 'doom-one t)
 (doom-themes-visual-bell-config)
 
-(defvar efs/default-font-size 150)
-(defvar efs/default-variable-font-size 150)
-
-(set-face-attribute 'default nil
-                    :font "JetBrains Mono"
-                    :weight 'light
-                    :height efs/default-font-size)
-
-;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil
-                    :font "JetBrains Mono"
-                    :weight 'light
-                    :height efs/default-font-size)
-
-;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil
-                    :font "Iosevka Aile"
-                    :height efs/default-variable-font-size
-                    :weight 'light)
-
 (use-package emojify
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
 
-(use-package minions
-  :hook (doom-modeline-mode . minions-mode))
-
 (use-package doom-modeline
   :after eshell     ;; Make sure it gets hooked after eshell
-  :hook (after-init . doom-modeline-mode)
+  :init
+  (unless after-init-time
+  ;; prevent flash of unstyled modeline at startup
+    (setq-default mode-line-format nil))
   :custom
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
@@ -209,8 +216,12 @@
   (doom-modeline-minor-modes t)
   (doom-modeline-persp-name nil)
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
-  (doom-modeline-major-mode-icon nil))
+  (doom-modeline-major-mode-icon nil)
+  :hook (after-startup . doom-modeline-mode))
 (doom-modeline-mode 1)
+
+(use-package minions
+  :hook (doom-modeline-mode . minions-mode))
 
 (use-package diminish)
 
@@ -498,92 +509,177 @@ folder, otherwise delete a word"
   :hook (lsp-mode . flycheck-mode))
 
 ;; Turn on indentation and auto-fill mode for Org files
-(defun js/org-mode-setup ()
-             (org-indent-mode)
-             ;(variable-pitch-mode 1) ;; Causes table columns not be aligned
-             (auto-fill-mode 0)
-             (visual-line-mode 1)
-             (setq evil-auto-indent nil)
-             (diminish org-indent-mode))
+  (defun js/org-mode-setup ()
+               (org-indent-mode)
+               ;(variable-pitch-mode 1) ;; Causes table columns not be aligned
+               (auto-fill-mode 0)
+               (visual-line-mode 1)
+               (setq evil-auto-indent nil)
+               (diminish org-indent-mode))
+;; Make sure org-indent face is available
+;(require 'org-indent)
 
-(use-package org
-  :hook (org-mode . js/org-mode-setup)
-  :config
-  (setq org-ellipsis " ▾"
-        org-hide-emphasis-markers t
-        org-src-fontify-natively t
-        org-fontify-quote-and-verse-blocks t
-        org-src-tab-acts-natively t
-        org-edit-src-content-indentation 2
-        org-hide-block-startup nil
-        org-src-preserve-indentation nil
-        org-startup-folded 'content
-        org-cycle-separator-lines 2)
+    ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+    ;(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+    ;(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+    ;(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+    ;(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+    ;(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+    ;(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+    ;(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+    ;(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+    ;(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+  (use-package org-mode
+    :straight (:host github
+                   ;; Install cutting-edge version of org-mode, and from a mirror,
+                   ;; because code.orgmode.org runs on a potato.
+                   :repo "emacs-straight/org-mode"
+                   :files ("*.el" "lisp/*.el" "contrib/lisp/*.el" "contrib/scripts")
+                   ;; HACK A necessary hack because org requires a compilation step
+                   ;;      after being cloned, and during that compilation a
+                   ;;      org-version.el is generated with these two functions, which
+                   ;;      return the output of a 'git describe ...'  call in the repo's
+                   ;;      root. Of course, this command won't work in a sparse clone,
+                   ;;      and more than that, initiating these compilation step is a
+                   ;;      hassle, so...
+                   :pre-build
+                   (with-temp-file (expand-file-name "org-version.el" (straight--repos-dir "org")) 
+                     (insert "(fset 'org-release (lambda () \"9.5\"))\n"
+                             "(fset 'org-git-version #'ignore)\n"
+                             "(provide 'org-version)\n"))
+                   ;; Prevents built-in Org from sneaking into the byte-compilation of
+                   ;; `org-plus-contrib', and inform other packages that `org-mode'
+                   ;; satisfies the `org' dependency: raxod502/straight.el#352
+                   :includes (org org-plus-contrib))
+    :preface
+    (setq org-modules
+          '(;; ol-w3m
+            ;; ol-bbdb
+            ol-bibtex
+            ;; org-tempo
+            ;; org-crypt
+            ;; org-habit
+            org-bookmark
+            org-eshell
+            org-irc
+            ;;org-indent
+            ;; ol-docview
+            ;; ol-gnus
+        ;; ol-info
+        ;; ol-irc
+        ;; ol-mhe
+        ;; ol-rmail
+        ;; ol-eww
+        ))
+    :hook (org-mode . js/org-mode-setup)
+    :custom
+    (org-ellipsis " ▾")
+    (org-hide-emphasis-markers t)
+    (org-src-fontify-natively t)
+    (org-fontify-quote-and-verse-blocks t)
+    (org-src-tab-acts-natively t)
+    (org-edit-src-content-indentation 2)
+    (org-hide-block-startup nil)
+    (org-src-preserve-indentation nil)
+    (org-startup-folded 'content)
+    (org-cycle-separator-lines 2)
+    (org-structure-template-alist '(("a" . "export ascii")
+                                    ("c" . "center")
+                                    ("C" . "comment")
+                                    ("e" . "example")
+                                    ("E" . "export")
+                                    ("h" . "export html")
+                                    ("l" . "export latex")
+                                    ("q" . "quote")
+                                    ("s" . "src")
+                                    ("v" . "verse")
+                                    ("el" . "src emacs-lisp")
+                                    ("py" . "src python")
+                                    ("json" . "src json")
+                                    ("yaml" . "src yaml")
+                                    ("sh" . "src sh")
+                                    ("go" . "src go")
+                                    ("clj" . "src clojure")))
+    :custom-face
+    (org-document-title ((t (:weight bold :height 1.3))))
+    (org-level-1 ((t (:inherit 'outline-1 :weight medium :height 1.2))))
+    (org-level-2 ((t (:inherit 'outline-2 :weight medium :height 1.1))))
+    (org-level-3 ((t (:inherit 'outline-3 :weight medium :height 1.05))))
+    (org-level-4 ((t (:inherit 'outline-4 :weight medium :height 1.0))))
+    (org-level-5 ((t (:inherit 'outline-5 :weight medium :height 1.1))))
+    (org-level-6 ((t (:inherit 'outline-6 :weight medium :height 1.1))))
+    (org-level-7 ((t (:inherit 'outline-7 :weight medium :height 1.1))))
+    (org-level-8 ((t (:inherit 'outline-8 :weight medium :height 1.1))))
+    ;:config
+    ;(set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
+    ;(setq org-modules
+    ;      '(org-crypt
+    ;        org-habit
+    ;        org-bookmark
+    ;        org-eshell
+    ;        org-irc))
 
-  (setq org-modules
-    '(org-crypt
-        org-habit
-        org-bookmark
-        org-eshell
-        org-irc))
+    ;(setq org-refile-targets '((nil :maxlevel . 1)
+    ;                           (org-agenda-files :maxlevel . 1)))
 
-  (setq org-refile-targets '((nil :maxlevel . 1)
-                             (org-agenda-files :maxlevel . 1)))
+    ;(setq org-outline-path-complete-in-steps nil)
+    ;(setq org-refile-use-outline-path t)
 
-  (setq org-outline-path-complete-in-steps nil)
-  (setq org-refile-use-outline-path t)
+    ;(evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
+    ;(evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-j") 'org-next-visible-heading)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "C-k") 'org-previous-visible-heading)
+    ;(evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
+    ;(evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup)
 
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-j") 'org-metadown)
-  (evil-define-key '(normal insert visual) org-mode-map (kbd "M-k") 'org-metaup))
+  ;; ;; Make sure org-
+    ;; indent face is available
+  ;(require 'org-indent)
 
-;; This is needed as of Org 9.2
-(require 'org-tempo)
-
-(add-to-list 'org-structure-template-alist '("sh" . "src sh"))
-(add-to-list 'org-structure-template-alist '("el" . "src emacs-lisp"))
-(add-to-list 'org-structure-template-alist '("sc" . "src scheme"))
-(add-to-list 'org-structure-template-alist '("ts" . "src typescript"))
-(add-to-list 'org-structure-template-alist '("py" . "src python"))
-(add-to-list 'org-structure-template-alist '("go" . "src go"))
-(add-to-list 'org-structure-template-alist '("yaml" . "src yaml"))
-(add-to-list 'org-structure-template-alist '("json" . "src json"))
+      ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+      ;; (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+      ;; (set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+      ;; (set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+      ;(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+      ;(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+      ;(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+      ;(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+      ;(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+      ;(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+    )
 
 (defun js/org-mode-visual-fill ()
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+(visual-fill-column-mode 1))
 
 (use-package visual-fill-column
   :hook (org-mode . js/org-mode-visual-fill))
 
 ;; Increase the size of various headings
-(set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
-(dolist (face '((org-level-1 . 1.2)
-                (org-level-2 . 1.1)
-                (org-level-3 . 1.05)
-                (org-level-4 . 1.0)
-                (org-level-5 . 1.1)
-                (org-level-6 . 1.1)
-                (org-level-7 . 1.1)
-                (org-level-8 . 1.1)))
-  (set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'medium :height (cdr face)))
+;(set-face-attribute 'org-document-title nil :font "JetBrains Mono" :weight 'bold :height 1.3)
+;(dolist (face '((org-level-1 . 1.2)
+;                (org-level-2 . 1.1)
+;(org-level-3 . 1.05)
+;                (org-level-4 . 1.0)
+;                (org-level-5 . 1.1)
+;                (org-level-6 . 1.1)
+;                (org-level-7 . 1.1)
+;                (org-level-8 . 1.1)))
+;(set-face-attribute (car face) nil :font "JetBrains Mono" :weight 'medium :height (cdr face)))
 
 ;; Make sure org-indent face is available
-(require 'org-indent)
+;(require 'org-indent)
 
 ;; Ensure that anything that should be fixed-pitch in Org files appears that way
-(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
-(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
-(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
-(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
-(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
-(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
+;(set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+;(set-face-attribute 'org-table nil  :inherit 'fixed-pitch)
+;(set-face-attribute 'org-formula nil  :inherit 'fixed-pitch)
+;(set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+;(set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+;(set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+;(set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+;(set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+;(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
 
 ;; Get rid of the background on column views
 ;;(set-face-attribute 'org-column nil :background nil)
