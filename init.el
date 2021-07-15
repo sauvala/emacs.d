@@ -141,40 +141,6 @@
       "fr"  '(consult-recent-file :which-key "recent files")
       "fR"  '(revert-buffer :which-key "revert file"))
 
-(when window-system (set-frame-size (selected-frame) 129 80))
-(js/leader-key-def
-  "w"  '(:ignore t :which-key "window")
-  "wm" '(toggle-frame-maximized :which-key "maxized")
-  "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
-
-(use-package dashboard
-  ;:demand t
-  :preface
-  (setq js/startup-time-message
-        (let ((package-count (hash-table-size straight--profile-cache)))
-          (format "Emacs loaded in %s with %d packages and %d garbage collections."
-                  (format "%.2f seconds"
-                          (float-time
-                           (time-subtract after-init-time before-init-time)))
-                  package-count
-                  gcs-done)))
-  :init
-  (dashboard-setup-startup-hook)
-  :config
-  (setq dashboard-startup-banner 'logo
-        dashboard-projects-backend 'projectile
-        dashboard-set-heading-icons t
-        dashboard-set-file-icons t
-        dashboard-center-content t
-        dashboard-items '((recents  . 5)
-                          (bookmarks . 5)
-                          (projects . 5)
-                          (agenda . 5)
-                          (registers . 5))
-        dashboard-init-info js/startup-time-message)
-  (dashboard-setup-startup-hook)
-  (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
-
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
@@ -203,11 +169,12 @@
   :commands emojify-mode)
 
 (use-package doom-modeline
-  :after eshell     ;; Make sure it gets hooked after eshell
+  ;:after eshell     ;; Make sure it gets hooked after eshell
   :init
   (unless after-init-time
-  ;; prevent flash of unstyled modeline at startup
+    ;; prevent flash of unstyled modeline at startup
     (setq-default mode-line-format nil))
+  (doom-modeline-mode 1)
   :custom
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
@@ -217,17 +184,17 @@
   (doom-modeline-persp-name nil)
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil)
-  :hook (after-startup . doom-modeline-mode))
-(doom-modeline-mode 1)
+  :hook (after-init . doom-modeline-mode))
 
 (use-package minions
   :hook (doom-modeline-mode . minions-mode))
 
 (use-package diminish)
 
-(recentf-mode 1)
-(setq recentf-max-menu-items 25)
-(setq recentf-max-saved-items 25)
+(add-hook 'emacs-startup-hook (lambda ()
+                                (recentf-mode 1)
+                                (setq recentf-max-menu-items 25)
+                                (setq recentf-max-saved-items 25)))
 
 (defun js/reload-init ()
   "Reload init.el."
@@ -452,7 +419,9 @@ folder, otherwise delete a word"
   (lsp-headerline-breadcrumb-enable nil)
   (lsp-modeline-code-actions-enable nil)
   (lsp-lens-enable t)
-  (lsp-idle-delay 0.500))
+  (lsp-idle-delay 0.500)
+  :config
+  (setq read-process-output-max 1048576)) ; (* 1024 1024)
 
 (js/leader-key-def
   "l"  '(:ignore t :which-key "lsp")

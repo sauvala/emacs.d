@@ -22,8 +22,6 @@
   - [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
   - [[#custom-keybindings][Custom keybindings]]
 - [[#general-configuration][General configuration]]
-  - [[#window-size][Window size]]
-  - [[#dashboard][Dashboard]]
   - [[#improve-scrolling][Improve scrolling]]
   - [[#line-numbers][Line numbers]]
   - [[#theme][Theme]]
@@ -247,45 +245,6 @@
 #+end_src
 
 * General configuration
-** Window size
-#+begin_src emacs-lisp
-  (when window-system (set-frame-size (selected-frame) 129 80))
-  (js/leader-key-def
-    "w"  '(:ignore t :which-key "window")
-    "wm" '(toggle-frame-maximized :which-key "maxized")
-    "wf" '(toggle-frame-fullscreen :which-key "fullscreen"))
-#+end_src
-** Dashboard
-#+begin_src emacs-lisp
-  (use-package dashboard
-    ;:demand t
-    :preface
-    (setq js/startup-time-message
-          (let ((package-count (hash-table-size straight--profile-cache)))
-            (format "Emacs loaded in %s with %d packages and %d garbage collections."
-                    (format "%.2f seconds"
-                            (float-time
-                             (time-subtract after-init-time before-init-time)))
-                    package-count
-                    gcs-done)))
-    :init
-    (dashboard-setup-startup-hook)
-    :config
-    (setq dashboard-startup-banner 'logo
-          dashboard-projects-backend 'projectile
-          dashboard-set-heading-icons t
-          dashboard-set-file-icons t
-          dashboard-center-content t
-          dashboard-items '((recents  . 5)
-                            (bookmarks . 5)
-                            (projects . 5)
-                            (agenda . 5)
-                            (registers . 5))
-          dashboard-init-info js/startup-time-message)
-    (dashboard-setup-startup-hook)
-    (setq initial-buffer-choice (lambda () (get-buffer-create "*dashboard*"))))
-#+end_src
-
 ** Improve scrolling
 #+begin_src emacs-lisp
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -329,11 +288,12 @@
 Run =all-the-icons-install-fonts= after installing this package
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    :after eshell     ;; Make sure it gets hooked after eshell
+    ;:after eshell     ;; Make sure it gets hooked after eshell
     :init
     (unless after-init-time
-    ;; prevent flash of unstyled modeline at startup
+      ;; prevent flash of unstyled modeline at startup
       (setq-default mode-line-format nil))
+    (doom-modeline-mode 1)
     :custom
     (doom-modeline-lsp t)
     (doom-modeline-github nil)
@@ -343,8 +303,7 @@ Run =all-the-icons-install-fonts= after installing this package
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
     (doom-modeline-major-mode-icon nil)
-    :hook (after-startup . doom-modeline-mode))
-  (doom-modeline-mode 1)
+    :hook (after-init . doom-modeline-mode))
   
   (use-package minions
     :hook (doom-modeline-mode . minions-mode))
@@ -357,9 +316,10 @@ Run =all-the-icons-install-fonts= after installing this package
 
 ** Recent files
 #+begin_src emacs-lisp
-  (recentf-mode 1)
-  (setq recentf-max-menu-items 25)
-  (setq recentf-max-saved-items 25)
+  (add-hook 'emacs-startup-hook (lambda ()
+                                  (recentf-mode 1)
+                                  (setq recentf-max-menu-items 25)
+                                  (setq recentf-max-saved-items 25)))
 #+end_src
 
 ** Restarting and quitting Emacs
