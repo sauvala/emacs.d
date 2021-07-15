@@ -643,7 +643,9 @@ Javascript and Typescript
     (lsp-headerline-breadcrumb-enable nil)
     (lsp-modeline-code-actions-enable nil)
     (lsp-lens-enable t)
-    (lsp-idle-delay 0.500))
+    (lsp-idle-delay 0.500)
+    :config
+    (setq read-process-output-max 1048576)) ; (* 1024 1024)
   
   (js/leader-key-def
     "l"  '(:ignore t :which-key "lsp")
