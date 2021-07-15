@@ -271,10 +271,10 @@
   
 ** Theme
 #+begin_src emacs-lisp
-  (use-package spacegray-theme)
-  (use-package doom-themes)
-  (load-theme 'doom-one t)
-  (doom-themes-visual-bell-config)
+  (use-package doom-themes
+    :hook (emacs-startup . (lambda () (load-theme 'doom-one t)))
+    :config
+    (doom-themes-visual-bell-config))
 #+end_src
 
 ** Emojis in buffers

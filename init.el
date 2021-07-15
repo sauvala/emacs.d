@@ -159,10 +159,10 @@
 (dolist (mode '(org-mode-hook))
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-(use-package spacegray-theme)
-(use-package doom-themes)
-(load-theme 'doom-one t)
-(doom-themes-visual-bell-config)
+(use-package doom-themes
+  :hook (emacs-startup . (lambda () (load-theme 'doom-one t)))
+  :config
+  (doom-themes-visual-bell-config))
 
 (use-package emojify
   :hook (erc-mode . emojify-mode)
