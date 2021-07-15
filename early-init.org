@@ -41,7 +41,7 @@ And https://github.com/meatcar/emacs.d
 Read process output max is taken from LSP performance guide. I could modify it only when lsp-mode is activated.
 Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode performance]] for tips.
 #+begin_src emacs-lisp
-  (setq read-process-output-max 1048576)
+  (setq read-process-output-max 65536) ; (* 64 1024)
 #+end_src
 
 * Defer compilation

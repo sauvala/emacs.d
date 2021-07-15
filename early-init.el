@@ -19,7 +19,7 @@
 (add-hook 'minibuffer-setup-hook #'js/defer-garbage-collection-h)
 (add-hook 'minibuffer-exit-hook #'js/restore-garbage-collection-h)
 
-(setq read-process-output-max 1048576)
+(setq read-process-output-max 65536) ; (* 64 1024)
 
 (defvar comp-deferred-compliation)
 (setq comp-deferred-compilation t)
