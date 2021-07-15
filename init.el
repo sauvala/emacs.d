@@ -169,12 +169,10 @@
   :commands emojify-mode)
 
 (use-package doom-modeline
-  ;:after eshell     ;; Make sure it gets hooked after eshell
   :init
   (unless after-init-time
     ;; prevent flash of unstyled modeline at startup
     (setq-default mode-line-format nil))
-  (doom-modeline-mode 1)
   :custom
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
@@ -184,9 +182,10 @@
   (doom-modeline-persp-name nil)
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil)
-  :hook (after-init . doom-modeline-mode))
+  :hook (emacs-startup . (lambda () (doom-modeline-mode 1))))
 
 (use-package minions
+  :after doom-modeline
   :hook (doom-modeline-mode . minions-mode))
 
 (use-package diminish)

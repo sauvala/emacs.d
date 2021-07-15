@@ -26,8 +26,10 @@
   - [[#line-numbers][Line numbers]]
   - [[#theme][Theme]]
   - [[#emojis-in-buffers][Emojis in buffers]]
-  - [[#doom-modeline][Doom modeline]]
-  - [[#mode-diminishing][Mode diminishing]]
+  - [[#modeline][Modeline]]
+    - [[#doom-modeline][Doom-modeline]]
+    - [[#minions][Minions]]
+    - [[#mode-diminishing][Mode diminishing]]
   - [[#recent-files][Recent files]]
   - [[#restarting-and-quitting-emacs][Restarting and quitting Emacs]]
 - [[#completion][Completion]]
@@ -284,16 +286,15 @@
     :commands emojify-mode)
 #+end_src
 
-** Doom modeline
+** Modeline
+*** Doom-modeline
 Run =all-the-icons-install-fonts= after installing this package
 #+begin_src emacs-lisp
   (use-package doom-modeline
-    ;:after eshell     ;; Make sure it gets hooked after eshell
     :init
     (unless after-init-time
       ;; prevent flash of unstyled modeline at startup
       (setq-default mode-line-format nil))
-    (doom-modeline-mode 1)
     :custom
     (doom-modeline-lsp t)
     (doom-modeline-github nil)
@@ -303,13 +304,17 @@ Run =all-the-icons-install-fonts= after installing this package
     (doom-modeline-persp-name nil)
     (doom-modeline-buffer-file-name-style 'truncate-except-project)
     (doom-modeline-major-mode-icon nil)
-    :hook (after-init . doom-modeline-mode))
-  
+    :hook (emacs-startup . (lambda () (doom-modeline-mode 1))))
+#+end_src
+
+*** Minions
+#+begin_src emacs-lisp  
   (use-package minions
+    :after doom-modeline
     :hook (doom-modeline-mode . minions-mode))
 #+end_src
 
-** Mode diminishing
+*** Mode diminishing
 #+begin_src emacs-lisp
   (use-package diminish)
 #+end_src
