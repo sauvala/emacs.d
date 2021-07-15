@@ -70,7 +70,8 @@
 (setq straight-use-package-by-default t
       use-package-always-defer t
       use-package-always-ensure t
-      straight-cache-autoloads t)
+      straight-cache-autoloads t
+      use-package-verbose t)
 
 (defvar bootstrap-version)
 (let ((bootstrap-file
