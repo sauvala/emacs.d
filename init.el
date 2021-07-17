@@ -57,7 +57,7 @@
   (global-undo-tree-mode 1))
 
 (use-package evil
-  :demand t
+  :defer 0.1
   :init
   (setq evil-want-integration t)
   (setq evil-want-keybinding nil)
@@ -78,13 +78,9 @@
   (evil-set-initial-state 'dashboard-mode 'normal))
 
 (use-package evil-collection
-  ;:demand t
-  ;:defer 1
   :after evil
   :init
   (evil-collection-init) 
-  ;:init
-  ;(setq evil-collection-company-use-tng nil)  ;; Is this a bug in evil-collection?
   :custom
   (dolist (mode '(anaconda-mode
                   buff-menu
@@ -121,7 +117,7 @@
   (setq which-key-idle-delay 0.3))
 
 (use-package general
-  :demand t
+  :defer 0.1
   :config
   (general-evil-setup t)
 
