@@ -46,8 +46,8 @@ Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode p
 
 * Defer compilation
 #+begin_src emacs-lisp
-  (defvar comp-deferred-compliation)
-  (setq comp-deferred-compilation t)
+  (setq comp-deferred-compilation nil
+      native-comp-deferred-compilation nil)
 #+end_src
 
 * Prioritise non-byte-compiled source files
@@ -157,4 +157,9 @@ Configure Straight.el
     :hook (emacs-startup . gcmh-mode)
     :config
     (gcmh-mode 1))
+#+end_src
+
+* End =early-init.el=
+#+begin_src emacs-lisp
+  (provide 'early-init)
 #+end_src

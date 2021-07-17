@@ -21,8 +21,8 @@
 
 (setq read-process-output-max 65536) ; (* 64 1024)
 
-(defvar comp-deferred-compliation)
-(setq comp-deferred-compilation t)
+(setq comp-deferred-compilation nil
+    native-comp-deferred-compilation nil)
 
 (setq load-prefer-newer noninteractive)
 
@@ -107,3 +107,5 @@
   :hook (emacs-startup . gcmh-mode)
   :config
   (gcmh-mode 1))
+
+(provide 'early-init)
