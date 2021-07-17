@@ -206,63 +206,8 @@
     "qR"  'restart-emacs
     "qr"  '(js/reload-init :which-key "reload confs")))
 
-(defun js/minibuffer-backward-kill (arg)
-  "When minibuffer is completing a file name delete up to parent
-folder, otherwise delete a word"
-  (interactive "p")
-  (if minibuffer-completing-file-name
-      ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
-      (if (string-match-p "/." (minibuffer-contents))
-          (zap-up-to-char (- arg) ?/)
-        (delete-minibuffer-contents))
-      (backward-kill-word arg)))
-
-(use-package vertico
-  :bind (:map vertico-map
-         ("C-j" . vertico-next)
-         ("C-k" . vertico-previous)
-         ("C-f" . vertico-exit)
-         :map minibuffer-local-map
-         ("M-h" . js/minibuffer-backward-kill))
-  :custom
-  (vertico-cycle t)
-  :custom-face
-  (vertico-current ((t (:background "#3a3f5a"))))
-  :init
-  (vertico-mode))
-
-(use-package corfu
-  :straight '(corfu :host github
-                    :repo "minad/corfu")
-  :bind (:map corfu-map
-         ("C-j" . corfu-next)
-         ("C-k" . corfu-previous)
-         ("C-f" . corfu-insert))
-  :custom
-  (corfu-cycle t)
-  :config
-  (corfu-global-mode))
-
-(use-package savehist
-  :demand 
-  :config
-  (setq history-length 25)
-  (savehist-mode 1))
-
-  ;; Individual history elements can be configured separately
-  ;;(put 'minibuffer-history 'history-length 25)
-  ;;(put 'evil-ex-history 'history-length 50)
-  ;;(put 'kill-ring 'history-length 25))
-
-(use-package marginalia
-  :after vertico
-  :custom
-  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  :init
-  (marginalia-mode))
-
 (use-package orderless
-  :demand t
+  :defer 0.1
   :init
   (setq completion-styles '(orderless)
         completion-category-defaults nil
@@ -287,7 +232,6 @@ folder, otherwise delete a word"
          :map minibuffer-local-map
          ("C-d" . embark-act))
   :config
-
   ;; Show Embark actions via which-key
   (setq embark-action-indicator
         (lambda (map _target)
@@ -297,11 +241,62 @@ folder, otherwise delete a word"
 
 (use-package embark-consult
   :after (embark consult)
-  ;:demand t ; only necessary if you have the hook below
-  ;; if you want to have consult previews as you move around an
-  ;; auto-updating embark collect buffer
   :hook
   (embark-collect-mode . consult-preview-at-point-mode))
+
+(defun js/minibuffer-backward-kill (arg)
+  "When minibuffer is completing a file name delete up to parent
+folder, otherwise delete a word"
+  (interactive "p")
+  (if minibuffer-completing-file-name
+      ;; Borrowed from https://github.com/raxod502/selectrum/issues/498#issuecomment-803283608
+      (if (string-match-p "/." (minibuffer-contents))
+          (zap-up-to-char (- arg) ?/)
+        (delete-minibuffer-contents))
+      (backward-kill-word arg)))
+
+(use-package vertico
+  :after orderless
+  :bind (:map vertico-map
+         ("C-j" . vertico-next)
+         ("C-k" . vertico-previous)
+         ("C-f" . vertico-exit)
+         :map minibuffer-local-map
+         ("M-h" . js/minibuffer-backward-kill))
+  :custom
+  (vertico-cycle t)
+  :custom-face
+  (vertico-current ((t (:background "#3a3f5a"))))
+  :init
+  (vertico-mode))
+
+(use-package marginalia
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  :init
+  (marginalia-mode))
+
+(use-package corfu
+  :straight '(corfu :host github
+                    :repo "minad/corfu")
+  :bind (:map corfu-map
+         ("C-j" . corfu-next)
+         ("C-k" . corfu-previous)
+         ("C-f" . corfu-insert))
+  :custom
+  (corfu-cycle t)
+  :config
+  (corfu-global-mode))
+
+(use-package savehist
+  :defer 0.1 
+  :config
+  (savehist-mode))
+
+  ;; Individual history elements can be configured separately
+  ;;(put 'minibuffer-history 'history-length 25)
+  ;;(put 'evil-ex-history 'history-length 50)
+  ;;(put 'kill-ring 'history-length 25))
 
 (use-package magit
   :bind ("C-M-;" . magit-status)
