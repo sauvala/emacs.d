@@ -531,6 +531,10 @@ folder, otherwise delete a word"
         ;; ol-eww
         ))
     :hook (org-mode . js/org-mode-setup)
+    :general
+    (js/leader-key-def
+      "o"   '(:ignore t :which-key "org")
+      "ot"  '(org-babel-tangle :which-key "tangle"))
     :custom
     (org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
