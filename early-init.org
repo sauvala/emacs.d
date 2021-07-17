@@ -141,14 +141,14 @@ Configure Straight.el
   (use-package esup
     :commands esup)
   
-  (use-package benchmark-init
-    :demand t
-    :straight (benchmark-init :host github
-                              :repo "nasyxx/benchmark-init-el")
-    :config
-    (benchmark-init/activate)
-    :hook
-    (after-init . benchmark-init/deactivate))
+  ;(use-package benchmark-init
+  ;  :demand t
+  ;  :straight (benchmark-init :host github
+  ;                            :repo "nasyxx/benchmark-init-el")
+  ;  :config
+  ;  (benchmark-init/activate)
+  ;  :hook
+  ;  (after-init . benchmark-init/deactivate))
 #+end_src
 
 * GC magic hack
