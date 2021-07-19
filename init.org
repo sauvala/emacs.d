@@ -51,6 +51,7 @@
     - [[#lsp][LSP]]
       - [[#python][Python]]
       - [[#dap-mode][dap-mode]]
+  - [[#arduino-with-platformio][Arduino with PlatformIO]]
   - [[#productivity][Productivity]]
     - [[#rainbow-delimiter][Rainbow delimiter]]
     - [[#rainbow-mode][Rainbow mode]]
@@ -649,6 +650,15 @@ Javascript and Typescript
       :keymaps 'lsp-mode-map
       :prefix lsp-keymap-prefix
       "d" '(dap-hydra t :wk "debugger")))
+#+end_src
+
+** Arduino with PlatformIO
+#+begin_src emacs-lisp
+  (use-package platformio-mode
+    :hook
+    (c++-mode-hook . (lambda ()
+                       (lsp-deferred)
+                       (platformio-conditionally-enable))))
 #+end_src
 
 ** Productivity 

@@ -454,6 +454,12 @@ folder, otherwise delete a word"
     :prefix lsp-keymap-prefix
     "d" '(dap-hydra t :wk "debugger")))
 
+(use-package platformio-mode
+  :hook
+  (c++-mode-hook . (lambda ()
+                     (lsp-deferred)
+                     (platformio-conditionally-enable))))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
