@@ -160,6 +160,12 @@
   :config
   (doom-themes-visual-bell-config))
 
+;(add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
+;(add-to-list 'frameset-filter-alist '(ns-appearance . :never))
+
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 (use-package emojify
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
@@ -473,6 +479,61 @@ folder, otherwise delete a word"
 (use-package flycheck
   :hook (lsp-mode . flycheck-mode))
 
+(use-package avy
+  :bind
+  (("M-g c" . 'avy-goto-char)
+   ("M-g 2" . 'avy-goto-char-2)
+   ("M-g t" . 'avy-goto-char-timer)
+   ("M-g h" . 'avy-org-goto-heading-timer)
+   ("M-g l" . 'avy-goto-line))
+  :config
+  (avy-setup-default))
+
+(use-package ace-window
+  :bind
+  (("M-o" . ace-window))
+  :custom
+  (aw-scope 'frame)
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-minibuffer-flag t)
+  ;(aw-background t)
+  :config
+  (ace-window-display-mode 1))
+
+(use-package expand-region
+   :bind (("M-[" . er/expand-region)
+          ("C-(" . er/mark-outside-pairs)))
+
+(use-package evil-nerd-commenter
+  :bind ("M-/" . evilnc-comment-or-uncomment-lines))
+
+(use-package winner
+  :after evil
+  :config
+  (winner-mode)
+  (define-key evil-window-map "u" 'winner-undo)
+  (define-key evil-window-map "U" 'winner-redo))
+
+(use-package super-save
+  :defer 1
+  :diminish super-save-mode
+  :config
+  (super-save-mode +1)
+  :custom
+  (super-save-auto-save-when-idle t))
+
+(use-package diff-hl
+  :config
+  (global-diff-hl-mode)
+  :hook
+  (magit-pre-refresh-hook . diff-hl-magit-pre-refresh)
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh))
+
+(use-package alert
+  :commands alert
+  :config
+  (setq alert-default-style 'notifications))
+
 ;; Turn on indentation and auto-fill mode for Org files
   (defun js/org-mode-setup ()
                (org-indent-mode)
@@ -540,7 +601,8 @@ folder, otherwise delete a word"
     :general
     (js/leader-key-def
       "o"   '(:ignore t :which-key "org")
-      "ot"  '(org-babel-tangle :which-key "tangle"))
+      "ot"  '(org-babel-tangle :which-key "tangle")
+      "oe"   '(org-ctrl-c-ctrl-c :which-key "eval"))
     :custom
     (org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
