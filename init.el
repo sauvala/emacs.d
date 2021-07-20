@@ -616,6 +616,15 @@ folder, otherwise delete a word"
       ;(set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch)
     )
 
+(use-package org-pomodoro
+  ;:after org-mode
+  :general
+  (js/leader-key-def
+    "op"  '(org-pomodoro :which-key "pomodoro")))
+
+(use-package org-make-toc
+  :hook (org-mode . org-make-toc-mode))
+
 (defun js/org-mode-visual-fill ()
   (setq visual-fill-column-width 110
         visual-fill-column-center-text t)
@@ -653,12 +662,3 @@ folder, otherwise delete a word"
 ;; Get rid of the background on column views
 ;;(set-face-attribute 'org-column nil :background nil)
 ;;(set-face-attribute 'org-column-title nil :background nil)
-
-(use-package org-make-toc
-  :hook (org-mode . org-make-toc-mode))
-
-;; (use-package org-pomodoro
-;;   :after org
-;;   :config
-;;   (js/leader-key-def
-;;     "op"  '(org-pomodoro :which-key "pomodoro")))
