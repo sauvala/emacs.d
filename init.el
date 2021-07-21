@@ -160,12 +160,6 @@
   :config
   (doom-themes-visual-bell-config))
 
-;(add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
-;(add-to-list 'frameset-filter-alist '(ns-appearance . :never))
-
-(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-(add-to-list 'default-frame-alist '(ns-appearance . dark))
-
 (use-package emojify
   :hook (erc-mode . emojify-mode)
   :commands emojify-mode)
@@ -175,7 +169,11 @@
   (unless after-init-time
     ;; prevent flash of unstyled modeline at startup
     (setq-default mode-line-format nil))
+  :custom-face
+  (mode-line ((t (:family "JetBrains Mono" :height 125))))
   :custom
+  (doom-modeline-height 25)
+  (doom-modeline-bar-width 4)
   (doom-modeline-lsp t)
   (doom-modeline-github nil)
   (doom-modeline-mu4e nil)
@@ -185,6 +183,12 @@
   (doom-modeline-buffer-file-name-style 'truncate-except-project)
   (doom-modeline-major-mode-icon nil)
   :hook (emacs-startup . (lambda () (doom-modeline-mode 1))))
+
+;; (defun js/doom-modeline--font-height ()
+;;   "Calculate the actual char height of the mode-line."
+;;   (+ (frame-char-height) 2))
+
+;; (advice-add #'doom-modeline--font-height :override #'js/doom-modeline--font-height)
 
 (use-package minions
   :after doom-modeline
@@ -538,17 +542,6 @@ folder, otherwise delete a word"
   :config
   (setq alert-default-style 'notifications))
 
-(use-package easy-kill
-  :general
-  (js/leader-key-def
-    "k"   '(:ignore t :which-key "easy-kill")
-    "kw"  '(easy-kill :which-key "select")
-    "kk"  '(easy-kill-region :which-key "kill selection")
-    "k@"  '(easy-mark :which-key "mark region"))
-  :bind
-  (([remap kill-ring-save] . easy-kill)
-   ([remap mark-sexp] . easy-mark)))
-
 ;; Turn on indentation and auto-fill mode for Org files
   (defun js/org-mode-setup ()
                (org-indent-mode)
@@ -617,7 +610,7 @@ folder, otherwise delete a word"
     (js/leader-key-def
       "o"   '(:ignore t :which-key "org")
       "ot"  '(org-babel-tangle :which-key "tangle")
-      "oe"   '(org-ctrl-c-ctrl-c :which-key "eval"))
+      "oe"  '(org-ctrl-c-ctrl-c :which-key "eval"))
     :custom
     (org-ellipsis " ▾")
     (org-hide-emphasis-markers t)
@@ -739,6 +732,21 @@ folder, otherwise delete a word"
 ;; Get rid of the background on column views
 ;;(set-face-attribute 'org-column nil :background nil)
 ;;(set-face-attribute 'org-column-title nil :background nil)
+
+(use-package org-roam
+  :custom
+  (org-roam-directory (file-truename "~/Google Drive/org/org-roam/"))
+  :general
+  (js/leader-key-def
+    "or"    '(:ignore t :which-key "org-roam")
+    "orb"   '(org-roam-buffer-toggle :which-key "toggle-buffer")
+    "orf"   '(org-roam-node-find :which-key "find-node")
+    "org"   '(org-roam-graph :which-key "graph")
+    "ori"   '(org-roam-node-insert :which-key "insert-node")
+    "orc"   '(org-roam-capture :which-key "capture")
+    "ort"  '(org-roam-dailies-capture-today :which-key "capture-today"))
+  :config
+  (org-roam-setup))
 
 (use-package speed-type)
 

@@ -46,6 +46,11 @@
       frame-inhibit-implied-resize t
       initial-major-mode 'fundamental-mode)
 
+(setq ns-use-proxy-icon nil)
+(setq frame-title-format nil)
+(add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+(add-to-list 'default-frame-alist '(ns-appearance . dark))
+
 (defvar js/default-font-size 150)
 (defvar js/default-variable-font-size 150)
 (add-to-list 'default-frame-alist '(font . "JetBrains Mono"))

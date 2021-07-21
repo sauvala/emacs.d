@@ -84,6 +84,14 @@ Check [[https://emacs-lsp.github.io/lsp-mode/page/performance/][Emacs lsp-mode p
         initial-major-mode 'fundamental-mode)
 #+end_src
 
+** Titlebar
+#+begin_src emacs-lisp
+  (setq ns-use-proxy-icon nil)
+  (setq frame-title-format nil)
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+#+end_src
+
 * Font
 #+begin_src emacs-lisp
   (defvar js/default-font-size 150)

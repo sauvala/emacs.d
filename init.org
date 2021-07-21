@@ -25,7 +25,6 @@
   - [[#improve-scrolling][Improve scrolling]]
   - [[#line-numbers][Line numbers]]
   - [[#theme][Theme]]
-  - [[#titlebar][Titlebar]]
   - [[#emojis-in-buffers][Emojis in buffers]]
   - [[#modeline][Modeline]]
     - [[#doom-modeline][Doom-modeline]]
@@ -61,7 +60,6 @@
   - [[#avy][Avy]]
   - [[#ace-window][Ace-window]]
   - [[#expand-region][Expand region]]
-  - [[#easy-kill][Easy kill]]
   - [[#commenting-lines][Commenting lines]]
   - [[#winner-mode][Winner mode]]
   - [[#super-save][Super save]]
@@ -73,6 +71,7 @@
   - [[#add-toc-automatically][Add TOC automatically]]
   - [[#visual-fill][Visual fill]]
   - [[#fonts-and-bullets][Fonts and bullets]]
+  - [[#org-roam][Org-roam]]
 - [[#other-tools][Other tools]]
   - [[#speed-typing][Speed typing]]
   - [[#elisp-bug-hunter][Elisp bug hunter]]
@@ -290,15 +289,6 @@
     (doom-themes-visual-bell-config))
 #+end_src
 
-** Titlebar
-#+begin_src emacs-lisp
-  ;(add-to-list 'frameset-filter-alist '(ns-transparent-titlebar . :never))
-  ;(add-to-list 'frameset-filter-alist '(ns-appearance . :never))
-  
-  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
-  (add-to-list 'default-frame-alist '(ns-appearance . dark))
-#+end_src
-
 ** Emojis in buffers
 #+begin_src emacs-lisp
   (use-package emojify
@@ -310,23 +300,36 @@
 *** Doom-modeline
 Run =all-the-icons-install-fonts= after installing this package
 #+begin_src emacs-lisp
-  (use-package doom-modeline
-    :init
-    (unless after-init-time
-      ;; prevent flash of unstyled modeline at startup
-      (setq-default mode-line-format nil))
-    :custom
-    (doom-modeline-lsp t)
-    (doom-modeline-github nil)
-    (doom-modeline-mu4e nil)
-    (doom-modeline-irc nil)
-    (doom-modeline-minor-modes t)
-    (doom-modeline-persp-name nil)
-    (doom-modeline-buffer-file-name-style 'truncate-except-project)
-    (doom-modeline-major-mode-icon nil)
-    :hook (emacs-startup . (lambda () (doom-modeline-mode 1))))
+      (use-package doom-modeline
+        :init
+        (unless after-init-time
+          ;; prevent flash of unstyled modeline at startup
+          (setq-default mode-line-format nil))
+        :custom-face
+        (mode-line ((t (:family "JetBrains Mono" :height 125))))
+        :custom
+        (doom-modeline-height 25)
+        (doom-modeline-bar-width 4)
+        (doom-modeline-lsp t)
+        (doom-modeline-github nil)
+        (doom-modeline-mu4e nil)
+        (doom-modeline-irc nil)
+        (doom-modeline-minor-modes t)
+        (doom-modeline-persp-name nil)
+        (doom-modeline-buffer-file-name-style 'truncate-except-project)
+        (doom-modeline-major-mode-icon nil)
+        :hook (emacs-startup . (lambda () (doom-modeline-mode 1))))
 #+end_src
 
+Change modeline font size to match modeline's height
+[[https://github.com/seagle0128/doom-modeline/issues/187#issuecomment-806448361]]
+#+begin_src emacs-lisp
+  ;; (defun js/doom-modeline--font-height ()
+  ;;   "Calculate the actual char height of the mode-line."
+  ;;   (+ (frame-char-height) 2))
+  
+  ;; (advice-add #'doom-modeline--font-height :override #'js/doom-modeline--font-height)
+#+end_src
 *** Minions
 #+begin_src emacs-lisp  
   (use-package minions
@@ -747,20 +750,6 @@ Javascript and Typescript
            ("C-(" . er/mark-outside-pairs)))
 #+end_src
 
-*** Easy kill
-#+begin_src emacs-lisp
-    (use-package easy-kill
-      :general
-      (js/leader-key-def
-        "k"   '(:ignore t :which-key "easy-kill")
-        "kw"  '(easy-kill :which-key "select")
-        "kk"  '(easy-kill-region :which-key "kill selection")
-        "k@"  '(easy-mark :which-key "mark region"))
-      :bind
-      (([remap kill-ring-save] . easy-kill)
-       ([remap mark-sexp] . easy-mark)))
-#+end_src
-
 *** Commenting lines
 #+begin_src emacs-lisp
   (use-package evil-nerd-commenter
@@ -878,7 +867,7 @@ Javascript and Typescript
       (js/leader-key-def
         "o"   '(:ignore t :which-key "org")
         "ot"  '(org-babel-tangle :which-key "tangle")
-        "oe"   '(org-ctrl-c-ctrl-c :which-key "eval"))
+        "oe"  '(org-ctrl-c-ctrl-c :which-key "eval"))
       :custom
       (org-ellipsis " ▾")
       (org-hide-emphasis-markers t)
@@ -1015,6 +1004,24 @@ Javascript and Typescript
   ;; Get rid of the background on column views
   ;;(set-face-attribute 'org-column nil :background nil)
   ;;(set-face-attribute 'org-column-title nil :background nil)
+#+end_src
+
+** Org-roam
+#+begin_src emacs-lisp
+  (use-package org-roam
+    :custom
+    (org-roam-directory (file-truename "~/Google Drive/org/org-roam/"))
+    :general
+    (js/leader-key-def
+      "or"    '(:ignore t :which-key "org-roam")
+      "orb"   '(org-roam-buffer-toggle :which-key "toggle-buffer")
+      "orf"   '(org-roam-node-find :which-key "find-node")
+      "org"   '(org-roam-graph :which-key "graph")
+      "ori"   '(org-roam-node-insert :which-key "insert-node")
+      "orc"   '(org-roam-capture :which-key "capture")
+      "ort"  '(org-roam-dailies-capture-today :which-key "capture-today"))
+    :config
+    (org-roam-setup))
 #+end_src
 
 * Other tools
