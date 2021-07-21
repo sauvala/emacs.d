@@ -53,6 +53,7 @@
       - [[#python][Python]]
       - [[#dap-mode][dap-mode]]
   - [[#arduino-with-platformio][Arduino with PlatformIO]]
+  - [[#aggressive-indent-mode][Aggressive indent mode]]
 - [[#productivity][Productivity]]
   - [[#rainbow-delimiter][Rainbow delimiter]]
   - [[#rainbow-mode][Rainbow mode]]
@@ -60,6 +61,7 @@
   - [[#avy][Avy]]
   - [[#ace-window][Ace-window]]
   - [[#expand-region][Expand region]]
+  - [[#easy-kill][Easy kill]]
   - [[#commenting-lines][Commenting lines]]
   - [[#winner-mode][Winner mode]]
   - [[#super-save][Super save]]
@@ -71,6 +73,9 @@
   - [[#add-toc-automatically][Add TOC automatically]]
   - [[#visual-fill][Visual fill]]
   - [[#fonts-and-bullets][Fonts and bullets]]
+- [[#other-tools][Other tools]]
+  - [[#speed-typing][Speed typing]]
+  - [[#elisp-bug-hunter][Elisp bug hunter]]
 :END:
 
 * Add lexical binding to generated file
@@ -388,12 +393,13 @@ https://github.com/minad/consult
   (use-package consult
     :bind (("C-s" . consult-line)
            ("C-M-l" . consult-imenu)
+           ("M-p" . consult-yank-from-kill-ring)
            :map minibuffer-local-map
            ("C-r" . consult-history))
     :custom
     (consult-project-root-function #'js/get-project-root)
     (completion-in-region-function #'consult-completion-in-region))
-#+end_src
+    #+end_src
 
 *** Embark
 "This package provides a sort of right-click contextual menu for Emacs, accessed through the embark-act command (which you should bind to a convenient key), offering you relevant actions to use on a target determined by the context."
@@ -679,7 +685,12 @@ Javascript and Typescript
                        (platformio-conditionally-enable))))
 #+end_src
 
-* Productivity 
+** Aggressive indent mode
+#+begin_src emacs-lisp
+  (use-package aggressive-indent-mode
+    :hook (emacs-lisp-mode-hook clojure-mode org))
+#+end_src
+* Productivity
 *** Rainbow delimiter
 #+begin_src emacs-lisp
   (use-package rainbow-delimiters
@@ -734,6 +745,20 @@ Javascript and Typescript
  (use-package expand-region
     :bind (("M-[" . er/expand-region)
            ("C-(" . er/mark-outside-pairs)))
+#+end_src
+
+*** Easy kill
+#+begin_src emacs-lisp
+    (use-package easy-kill
+      :general
+      (js/leader-key-def
+        "k"   '(:ignore t :which-key "easy-kill")
+        "kw"  '(easy-kill :which-key "select")
+        "kk"  '(easy-kill-region :which-key "kill selection")
+        "k@"  '(easy-mark :which-key "mark region"))
+      :bind
+      (([remap kill-ring-save] . easy-kill)
+       ([remap mark-sexp] . easy-mark)))
 #+end_src
 
 *** Commenting lines
@@ -992,3 +1017,13 @@ Javascript and Typescript
   ;;(set-face-attribute 'org-column-title nil :background nil)
 #+end_src
 
+* Other tools
+** Speed typing
+#+begin_src emacs-lisp
+  (use-package speed-type)
+#+end_src
+
+** Elisp bug hunter
+#+begin_src emacs-lisp
+  (use-package bug-hunter)
+#+end_src

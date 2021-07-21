@@ -226,6 +226,7 @@
 (use-package consult
   :bind (("C-s" . consult-line)
          ("C-M-l" . consult-imenu)
+         ("M-p" . consult-yank-from-kill-ring)
          :map minibuffer-local-map
          ("C-r" . consult-history))
   :custom
@@ -466,6 +467,9 @@ folder, otherwise delete a word"
                      (lsp-deferred)
                      (platformio-conditionally-enable))))
 
+(use-package aggressive-indent-mode
+  :hook (emacs-lisp-mode-hook clojure-mode org))
+
 (use-package rainbow-delimiters
   :hook (prog-mode . rainbow-delimiters-mode))
 
@@ -533,6 +537,17 @@ folder, otherwise delete a word"
   :commands alert
   :config
   (setq alert-default-style 'notifications))
+
+(use-package easy-kill
+  :general
+  (js/leader-key-def
+    "k"   '(:ignore t :which-key "easy-kill")
+    "kw"  '(easy-kill :which-key "select")
+    "kk"  '(easy-kill-region :which-key "kill selection")
+    "k@"  '(easy-mark :which-key "mark region"))
+  :bind
+  (([remap kill-ring-save] . easy-kill)
+   ([remap mark-sexp] . easy-mark)))
 
 ;; Turn on indentation and auto-fill mode for Org files
   (defun js/org-mode-setup ()
@@ -724,3 +739,7 @@ folder, otherwise delete a word"
 ;; Get rid of the background on column views
 ;;(set-face-attribute 'org-column nil :background nil)
 ;;(set-face-attribute 'org-column-title nil :background nil)
+
+(use-package speed-type)
+
+(use-package bug-hunter)
