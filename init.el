@@ -30,8 +30,10 @@
       (when (memq window-system '(mac ns x))
         (exec-path-from-shell-initialize)))
 
-(setq mac-option-modifier nil
+(setq mac-right-option-modifier 'nil
+      mac-option-modifier 'super
       mac-command-modifier 'meta
+      ns-function-modifier 'hyper
       x-select-enable-clipboard t)
 
 (global-set-key (kbd "<escape>") 'keyboard-escape-quit)
@@ -124,7 +126,7 @@
   (general-create-definer js/leader-key-def
     :keymaps '(normal insert visual emacs)
     :prefix "SPC"
-    :global-prefix "C-SPC"))
+    :global-prefix "s-SPC"))
 
 (use-package use-package-chords
   :disabled
@@ -288,16 +290,25 @@ folder, otherwise delete a word"
   (marginalia-mode))
 
 (use-package corfu
-  :straight '(corfu :host github
-                    :repo "minad/corfu")
-  :bind (:map corfu-map
-         ("C-j" . corfu-next)
-         ("C-k" . corfu-previous)
-         ("C-f" . corfu-insert))
+  :bind
+  (:map corfu-map
+        ("TAB" . corfu-next)
+        ("S-TAB" . corfu-previous))
   :custom
   (corfu-cycle t)
-  :config
+  (corfu-quit-at-boundary t)
+  (corfu-quit-no-match t)
+  :init
   (corfu-global-mode))
+
+(use-package emacs
+  :init
+  (setq read-extended-command-predicate 'command-completion-default-include-p)
+  (setq tab-always-indent 'complete))
+
+(use-package dabbrev
+  :bind
+  (("C-SPC" . dabbrev-completion)))
 
 (use-package savehist
   :defer 0.1 

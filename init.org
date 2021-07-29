@@ -20,7 +20,7 @@
   - [[#which-key][which-key]]
   - [[#leader-bindings-with-generalel][Leader bindings with general.el]]
   - [[#enable-keychord-bind-with-use-package][Enable keychord bind with use-package]]
-  - [[#custom-keybindings][Custom keybindings]]
+  - [[#custom-keybindings-with-generalel][Custom keybindings with General.el]]
 - [[#general-configuration][General configuration]]
   - [[#improve-scrolling][Improve scrolling]]
   - [[#line-numbers][Line numbers]]
@@ -39,7 +39,10 @@
     - [[#embark][Embark]]
   - [[#vertico][Vertico]]
   - [[#completion-metadata][Completion metadata]]
-  - [[#corfu][Corfu]]
+  - [[#auto-complete][Auto complete]]
+    - [[#corfu][Corfu]]
+    - [[#emacs-configs-for-corfu][Emacs configs for Corfu]]
+    - [[#dabbrev][Dabbrev]]
   - [[#save-minibuffer-history][Save minibuffer history]]
 - [[#development][Development]]
   - [[#magit][Magit]]
@@ -131,8 +134,10 @@
 * Keyboard bindings
 ** Mac keyboard + Finnish layout 
 #+begin_src emacs-lisp
-  (setq mac-option-modifier nil
+  (setq mac-right-option-modifier 'nil
+        mac-option-modifier 'super
         mac-command-modifier 'meta
+        ns-function-modifier 'hyper
         x-select-enable-clipboard t)
 #+end_src
 
@@ -237,7 +242,7 @@
     (general-create-definer js/leader-key-def
       :keymaps '(normal insert visual emacs)
       :prefix "SPC"
-      :global-prefix "C-SPC"))
+      :global-prefix "s-SPC"))
 #+end_src
 
 ** Enable keychord bind with use-package
@@ -247,7 +252,7 @@
     :config (key-chord-mode 1))
 #+end_src
 
-** Custom keybindings
+** Custom keybindings with General.el
 #+begin_src emacs-lisp
   (js/leader-key-def
         "f"   '(:ignore t :which-key "files")
@@ -466,19 +471,35 @@ https://github.com/oantolin/embark
     (marginalia-mode))
 #+end_src
 
-** Corfu
+** Auto complete
+*** Corfu
 #+begin_src emacs-lisp
   (use-package corfu
-    :straight '(corfu :host github
-                      :repo "minad/corfu")
-    :bind (:map corfu-map
-           ("C-j" . corfu-next)
-           ("C-k" . corfu-previous)
-           ("C-f" . corfu-insert))
+    :bind
+    (:map corfu-map
+          ("TAB" . corfu-next)
+          ("S-TAB" . corfu-previous))
     :custom
     (corfu-cycle t)
-    :config
+    (corfu-quit-at-boundary t)
+    (corfu-quit-no-match t)
+    :init
     (corfu-global-mode))
+#+end_src
+
+*** Emacs configs for Corfu
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (setq read-extended-command-predicate 'command-completion-default-include-p)
+    (setq tab-always-indent 'complete))
+#+end_src
+
+*** Dabbrev
+#+begin_src emacs-lisp
+  (use-package dabbrev
+    :bind
+    (("C-SPC" . dabbrev-completion))) 
 #+end_src
 
 ** Save minibuffer history
