@@ -542,6 +542,16 @@ folder, otherwise delete a word"
   :config
   (setq alert-default-style 'notifications))
 
+(use-package perspective
+  :general
+  (js/leader-key-def
+    "v"   '(:ignore t :which-key "perspective")
+    "vl"  '(persp-list-buffers :which-key "list buffers"))
+  :bind
+  ("C-x C-b" . persp-list-buffers)
+  :config
+  (perps-mode))
+
 ;; Turn on indentation and auto-fill mode for Org files
   (defun js/org-mode-setup ()
                (org-indent-mode)

@@ -65,6 +65,7 @@
   - [[#super-save][Super save]]
   - [[#highlight-uncommitted-changes][Highlight uncommitted changes]]
   - [[#alerts][Alerts]]
+  - [[#perspectiveel][Perspective.el]]
 - [[#org-mode][Org mode]]
   - [[#org-config][Org config]]
   - [[#pomodoro][Pomodoro]]
@@ -793,6 +794,19 @@ Javascript and Typescript
     :commands alert
     :config
     (setq alert-default-style 'notifications))
+#+end_src
+
+*** Perspective.el
+#+begin_src emacs-lisp
+  (use-package perspective
+    :general
+    (js/leader-key-def
+      "v"   '(:ignore t :which-key "perspective")
+      "vl"  '(persp-list-buffers :which-key "list buffers"))
+    :bind
+    ("C-x C-b" . persp-list-buffers)
+    :config
+    (perps-mode))
 #+end_src
 
 * Org mode
