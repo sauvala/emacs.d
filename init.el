@@ -290,6 +290,7 @@ folder, otherwise delete a word"
   (marginalia-mode))
 
 (use-package corfu
+  :after orderless
   :bind
   (:map corfu-map
         ("TAB" . corfu-next)

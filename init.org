@@ -475,6 +475,7 @@ https://github.com/oantolin/embark
 *** Corfu
 #+begin_src emacs-lisp
   (use-package corfu
+    :after orderless
     :bind
     (:map corfu-map
           ("TAB" . corfu-next)
