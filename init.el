@@ -371,7 +371,7 @@ folder, otherwise delete a word"
   "pd"  'projectile-dired)
 
 (use-package treemacs
-  :defer 2
+  :defer 1.5
   :config
   (js/leader-key-def
     "t"   '(:ignore t :which-key "treemacs")

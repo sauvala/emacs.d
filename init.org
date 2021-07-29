@@ -589,7 +589,7 @@ Add icons to files names
 ** Treemacs
 #+begin_src emacs-lisp
   (use-package treemacs
-    :defer 2
+    :defer 1.5
     :config
     (js/leader-key-def
       "t"   '(:ignore t :which-key "treemacs")
