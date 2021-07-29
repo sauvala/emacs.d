@@ -283,11 +283,16 @@ folder, otherwise delete a word"
   :init
   (vertico-mode))
 
+(use-package all-the-icons)
+
+(use-package all-the-icons-completion
+  :straight (:host github :repo "iyefrat/all-the-icons-completion")
+  :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+
 (use-package marginalia
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  :init
-  (marginalia-mode))
+  :hook (emacs-startup . marginalia-mode))
 
 (use-package corfu
   :after orderless

@@ -39,6 +39,10 @@
     - [[#embark][Embark]]
   - [[#vertico][Vertico]]
   - [[#completion-metadata][Completion metadata]]
+    - [[#add-icons-to-marginalia-metadata][Add icons to Marginalia metadata]]
+      - [[#all-the-icons][all-the-icons]]
+      - [[#all-the-icons-completion][all-the-icons-completion]]
+    - [[#marginalia][Marginalia]]
   - [[#auto-complete][Auto complete]]
     - [[#corfu][Corfu]]
     - [[#emacs-configs-for-corfu][Emacs configs for Corfu]]
@@ -463,12 +467,27 @@ https://github.com/oantolin/embark
 #+end_src
 
 ** Completion metadata
+*** Add icons to Marginalia metadata
+Add icons to files names
+[[https://github.com/minad/marginalia/issues/59]]
+**** all-the-icons
+#+begin_src emacs-lisp
+  (use-package all-the-icons)
+#+end_src
+
+**** all-the-icons-completion
+#+begin_src emacs-lisp
+  (use-package all-the-icons-completion
+    :straight (:host github :repo "iyefrat/all-the-icons-completion")
+    :hook (marginalia-mode . all-the-icons-completion-marginalia-setup))
+#+end_src
+
+*** Marginalia
 #+begin_src emacs-lisp 
   (use-package marginalia
     :custom
     (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-    :init
-    (marginalia-mode))
+    :hook (emacs-startup . marginalia-mode))
 #+end_src
 
 ** Auto complete
