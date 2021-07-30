@@ -173,6 +173,7 @@
     (setq-default mode-line-format nil))
   :custom-face
   (mode-line ((t (:family "JetBrains Mono" :height 125))))
+  (mode-line-inactive ((t (:family "JetBrains Mono" :height 125))))
   :custom
   (doom-modeline-height 25)
   (doom-modeline-bar-width 4)
