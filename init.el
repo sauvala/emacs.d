@@ -535,6 +535,10 @@ folder, otherwise delete a word"
    ("M-g t" . 'avy-goto-char-timer)
    ("M-g h" . 'avy-org-goto-heading-timer)
    ("M-g l" . 'avy-goto-line))
+  :general
+  (js/leader-key-def
+    "j"   '(:ignore t :which-key "jump")
+    "jt"  '(avy-goto-char-timer :which-key "time"))
   :config
   (avy-setup-default))
 
