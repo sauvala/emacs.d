@@ -433,7 +433,7 @@ folder, otherwise delete a word"
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode) . lsp)
+  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode) . lsp)
   :bind
   (:map lsp-mode-map ("TAB" . completion-at-point))
   :custom
@@ -442,7 +442,14 @@ folder, otherwise delete a word"
   (lsp-lens-enable t)
   (lsp-idle-delay 0.500)
   :config
-  (setq read-process-output-max 1048576)) ; (* 1024 1024)
+  (setq read-process-output-max 1048576) ; (* 1024 1024)
+
+  ;; Install TF LSP: https://github.com/hashicorp/terraform-ls
+  ;; Editor integration: https://github.com/hashicorp/terraform-ls/blob/main/docs/USAGE.md#emacs
+  (lsp-register-client
+   (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
+                    :major-modes '(terraform-mode)
+                    :server-id 'terraform-ls))) 
 
 (js/leader-key-def
   "l"  '(:ignore t :which-key "lsp")
@@ -489,6 +496,14 @@ folder, otherwise delete a word"
   :after (lsp treemacs)
   :init
   (lsp-treemacs-sync-mode 1))
+
+(use-package docker
+  :ensure t
+  :general
+  (js/leader-key-def
+    "d" 'docker))
+
+(use-package terraform-mode)
 
 (use-package platformio-mode
   :hook
