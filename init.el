@@ -427,10 +427,12 @@ folder, otherwise delete a word"
   :hook ((js2-mode . prettier-js-mode)
           (typescript-mode . prettier-js-mode)))
 
+(use-package go-mode)
+
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((clojure-mode clojurescript-mode clojurec-mode python-mode) . lsp)
+  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode) . lsp)
   :bind
   (:map lsp-mode-map ("TAB" . completion-at-point))
   :custom
