@@ -231,26 +231,26 @@
 
 (use-package consult
   :bind (("C-s" . consult-line)
-         ("C-M-l" . consult-imenu)
-         ("M-p" . consult-yank-from-kill-ring)
-         :map minibuffer-local-map
-         ("C-r" . consult-history))
+	 ("C-M-l" . consult-imenu)
+	 ("M-p" . consult-yank-from-kill-ring)
+	 :map minibuffer-local-map
+	 ("C-r" . consult-history))
   :custom
   (consult-project-root-function #'js/get-project-root)
   (completion-in-region-function #'consult-completion-in-region))
 
 (use-package embark
   :bind (("C-S-a" . embark-act)
-         ("C-S-w" . embark-dwim)
-         :map minibuffer-local-map
-         ("C-d" . embark-act))
+	 ("C-S-w" . embark-dwim)
+	 :map minibuffer-local-map
+	 ("C-d" . embark-act))
   :config
   ;; Show Embark actions via which-key
   (setq embark-action-indicator
-        (lambda (map _target)
-          (which-key--show-keymap "Embark" map nil nil 'no-paging)
-          #'which-key--hide-popup-ignore-command)
-        embark-become-indicator embark-action-indicator))
+	(lambda (map _target)
+	  (which-key--show-keymap "Embark" map nil nil 'no-paging)
+	  #'which-key--hide-popup-ignore-command)
+	embark-become-indicator embark-action-indicator))
 
 (use-package embark-consult
   :after (embark consult)
@@ -559,15 +559,7 @@ folder, otherwise delete a word"
   :config
   (setq alert-default-style 'notifications))
 
-(use-package perspective
-  :general
-  (js/leader-key-def
-    "v"   '(:ignore t :which-key "perspective")
-    "vl"  '(persp-list-buffers :which-key "list buffers"))
-  :bind
-  ("C-x C-b" . persp-list-buffers)
-  :config
-  (perps-mode))
+(use-package bufler)
 
 ;; Turn on indentation and auto-fill mode for Org files
   (defun js/org-mode-setup ()
