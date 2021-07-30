@@ -59,6 +59,7 @@
     - [[#lsp][LSP]]
       - [[#python][Python]]
       - [[#dap-mode][dap-mode]]
+      - [[#lsp-treemacs][lsp-treemacs]]
   - [[#arduino-with-platformio][Arduino with PlatformIO]]
   - [[#aggressive-indent-mode][Aggressive indent mode]]
 - [[#productivity][Productivity]]
@@ -513,7 +514,8 @@ Add icons to files names
   (use-package emacs
     :init
     (setq read-extended-command-predicate 'command-completion-default-include-p)
-    (setq tab-always-indent 'complete))
+    ;(setq tab-always-indent 'complete)
+    )
 #+end_src
 
 *** Dabbrev
@@ -725,6 +727,14 @@ Javascript and Typescript
       :keymaps 'lsp-mode-map
       :prefix lsp-keymap-prefix
       "d" '(dap-hydra t :wk "debugger")))
+#+end_src
+
+**** lsp-treemacs
+#+begin_src emacs-lisp
+  (use-package lsp-treemacs
+    :after (lsp treemacs)
+    :init
+    (lsp-treemacs-sync-mode 1))
 #+end_src
 
 ** Arduino with PlatformIO

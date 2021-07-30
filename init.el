@@ -310,7 +310,8 @@ folder, otherwise delete a word"
 (use-package emacs
   :init
   (setq read-extended-command-predicate 'command-completion-default-include-p)
-  (setq tab-always-indent 'complete))
+  ;(setq tab-always-indent 'complete)
+  )
 
 (use-package dabbrev
   :bind
@@ -483,6 +484,11 @@ folder, otherwise delete a word"
     :keymaps 'lsp-mode-map
     :prefix lsp-keymap-prefix
     "d" '(dap-hydra t :wk "debugger")))
+
+(use-package lsp-treemacs
+  :after (lsp treemacs)
+  :init
+  (lsp-treemacs-sync-mode 1))
 
 (use-package platformio-mode
   :hook
