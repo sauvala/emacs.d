@@ -32,6 +32,7 @@
     - [[#mode-diminishing][Mode diminishing]]
   - [[#recent-files][Recent files]]
   - [[#restarting-and-quitting-emacs][Restarting and quitting Emacs]]
+  - [[#default-encoding][Default encoding]]
 - [[#completion][Completion]]
   - [[#improve-completions][Improve completions]]
     - [[#orderless][Orderless]]
@@ -381,6 +382,23 @@ Change modeline font size to match modeline's height
       "qq"  '(save-buffers-kill-emacs :which-key "quit emacs")
       "qR"  'restart-emacs
       "qr"  '(js/reload-init :which-key "reload confs")))
+#+end_src
+
+** Default encoding
+https://www.masteringemacs.org/article/working-coding-systems-unicode-emacs
+#+begin_src emacs-lisp
+  (prefer-coding-system 'utf-8)
+  (set-default-coding-systems 'utf-8)
+  (set-terminal-coding-system 'utf-8)
+  (set-keyboard-coding-system 'utf-8)
+  ;; backwards compatibility as default-buffer-file-coding-system
+  ;; is deprecated in 23.2.
+  (if (boundp 'buffer-file-coding-system)
+      (setq-default buffer-file-coding-system 'utf-8)
+    (setq default-buffer-file-coding-system 'utf-8))
+  
+  ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
+  (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 #+end_src
 
 * Completion
