@@ -100,12 +100,13 @@
   :commands esup)
 
 (use-package benchmark-init
-:straight (benchmark-init :host github
-                          :repo "nasyxx/benchmark-init-el")
-:config
-(benchmark-init/activate)
-:hook
-(after-init . benchmark-init/deactivate))
+  :demand t
+  :straight (benchmark-init :host github
+                            :repo "nasyxx/benchmark-init-el")
+  :config
+  (benchmark-init/activate)
+  :hook
+  (after-init . benchmark-init/deactivate))
 
 (use-package gcmh
   :hook (emacs-startup . gcmh-mode)

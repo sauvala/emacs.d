@@ -154,12 +154,13 @@ Configure Straight.el
 ** benchmark-init
 #+begin_src emacs-lisp
   (use-package benchmark-init
-  :straight (benchmark-init :host github
-                            :repo "nasyxx/benchmark-init-el")
-  :config
-  (benchmark-init/activate)
-  :hook
-  (after-init . benchmark-init/deactivate))
+    :demand t
+    :straight (benchmark-init :host github
+                              :repo "nasyxx/benchmark-init-el")
+    :config
+    (benchmark-init/activate)
+    :hook
+    (after-init . benchmark-init/deactivate))
 #+end_src
 
 * GC magic hack
