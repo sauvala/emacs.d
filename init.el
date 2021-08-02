@@ -444,10 +444,12 @@ folder, otherwise delete a word"
 
 (use-package go-mode)
 
+(use-package lsp-java)
+
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode) . lsp)
+  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode java-mode) . lsp)
   :bind
   (:map lsp-mode-map ("TAB" . completion-at-point))
   :custom

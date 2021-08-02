@@ -57,6 +57,7 @@
     - [[#clojure][Clojure]]
     - [[#javascript][Javascript]]
     - [[#go][Go]]
+    - [[#java][Java]]
     - [[#lsp][LSP]]
       - [[#python][Python]]
       - [[#dap-mode][dap-mode]]
@@ -686,12 +687,17 @@ Javascript and Typescript
   (use-package go-mode)
 #+end_src
 
+*** Java
+#+begin_src emacs-lisp
+  (use-package lsp-java)
+#+end_src
+
 *** LSP
 #+begin_src emacs-lisp
     (use-package lsp-mode
       :commands lsp
       :hook
-      ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode) . lsp)
+      ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode java-mode) . lsp)
       :bind
       (:map lsp-mode-map ("TAB" . completion-at-point))
       :custom
