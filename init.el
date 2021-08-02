@@ -449,7 +449,8 @@ folder, otherwise delete a word"
 (use-package lsp-mode
   :commands lsp
   :hook
-  ((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode java-mode) . lsp)
+  (((clojure-mode clojurescript-mode clojurec-mode python-mode go-mode terraform-mode java-mode) . lsp)
+   (go-mode . js/lsp-go-install-save-hooks))
   :bind
   (:map lsp-mode-map ("TAB" . completion-at-point))
   :custom
@@ -465,7 +466,14 @@ folder, otherwise delete a word"
   (lsp-register-client
    (make-lsp-client :new-connection (lsp-stdio-connection '("/usr/local/bin/terraform-ls" "serve"))
                     :major-modes '(terraform-mode)
-                    :server-id 'terraform-ls))) 
+                    :server-id 'terraform-ls))
+  ;; gopls
+  (defun js/lsp-go-install-save-hooks ()
+    (add-hook 'before-save-hook #'lsp-format-buffer t t)
+    (add-hook 'before-save-hook #'lsp-organize-imports t t))
+  (lsp-register-custom-settings
+   '(("gopls.completeUnimported" t t)
+     ("gopls.staticcheck" t t)))) 
 
 (js/leader-key-def
   "l"  '(:ignore t :which-key "lsp")
