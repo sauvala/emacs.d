@@ -145,18 +145,21 @@ Configure Straight.el
 #+end_src
 
 * Benchmarking
+** Esup
 #+begin_src emacs-lisp
   (use-package esup
     :commands esup)
-  
-  ;(use-package benchmark-init
-  ;  :demand t
-  ;  :straight (benchmark-init :host github
-  ;                            :repo "nasyxx/benchmark-init-el")
-  ;  :config
-  ;  (benchmark-init/activate)
-  ;  :hook
-  ;  (after-init . benchmark-init/deactivate))
+#+end_src
+
+** benchmark-init
+#+begin_src emacs-lisp
+  (use-package benchmark-init
+  :straight (benchmark-init :host github
+                            :repo "nasyxx/benchmark-init-el")
+  :config
+  (benchmark-init/activate)
+  :hook
+  (after-init . benchmark-init/deactivate))
 #+end_src
 
 * GC magic hack
