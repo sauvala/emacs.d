@@ -53,6 +53,7 @@
   - [[#magit][Magit]]
   - [[#projectile][Projectile]]
   - [[#treemacs][Treemacs]]
+  - [[#terminal][Terminal]]
   - [[#languages][Languages]]
     - [[#clojure][Clojure]]
     - [[#javascript][Javascript]]
@@ -628,6 +629,11 @@ Add icons to files names
     :after treemacs)
 #+end_src
 
+** Terminal
+#+begin_src emacs-lisp
+  (use-package vterm)
+#+end_src
+
 ** Languages
 *** Clojure
 #+begin_src emacs-lisp
@@ -807,6 +813,7 @@ Javascript and Typescript
   (use-package aggressive-indent-mode
     :hook (emacs-lisp-mode-hook clojure-mode org))
 #+end_src
+
 * Productivity
 *** Rainbow delimiter
 #+begin_src emacs-lisp

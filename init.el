@@ -399,6 +399,8 @@ folder, otherwise delete a word"
 (use-package treemacs-projectile
   :after treemacs)
 
+(use-package vterm)
+
 (use-package cider)
 
 (use-package nvm)
