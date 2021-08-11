@@ -346,6 +346,13 @@ folder, otherwise delete a word"
 (setq-default tab-width 2)
 (setq-default evil-shift-width tab-width)
 
+(use-package centered-window)
+
+(use-package sublimity
+  :config
+  (require 'sublimity-map)
+  (require 'sublimity-attractive))
+
 (use-package magit
   :bind ("C-M-;" . magit-status)
   :commands (magit-status magit-get-current-branch)

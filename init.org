@@ -52,6 +52,8 @@
   - [[#save-minibuffer-history][Save minibuffer history]]
 - [[#editor-configuration][Editor configuration]]
   - [[#tab-width][Tab width]]
+  - [[#center-content][Center content]]
+  - [[#sublimity][Sublimity]]
 - [[#development][Development]]
   - [[#magit][Magit]]
   - [[#projectile][Projectile]]
@@ -351,6 +353,7 @@ Change modeline font size to match modeline's height
   
   ;; (advice-add #'doom-modeline--font-height :override #'js/doom-modeline--font-height)
 #+end_src
+
 *** Minions
 #+begin_src emacs-lisp  
   (use-package minions
@@ -574,6 +577,19 @@ Add icons to files names
 #+begin_src emacs-lisp
   (setq-default tab-width 2)
   (setq-default evil-shift-width tab-width)
+#+end_src
+
+** Center content
+#+begin_src emacs-lisp
+  (use-package centered-window)
+#+end_src
+
+** Sublimity
+#+begin_src emacs-lisp
+  (use-package sublimity
+    :config
+    (require 'sublimity-map)
+    (require 'sublimity-attractive))
 #+end_src
 
 * Development
