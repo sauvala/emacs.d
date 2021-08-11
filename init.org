@@ -138,9 +138,9 @@
 * Setup path from shell
 #+begin_src emacs-lisp
   (use-package exec-path-from-shell
-        :config
-        (when (memq window-system '(mac ns x))
-          (exec-path-from-shell-initialize)))
+    :config
+    (when (memq window-system '(mac ns x))
+      (exec-path-from-shell-initialize)))
 #+end_src
 
 * Keyboard bindings
@@ -775,7 +775,7 @@ Javascript and Typescript
     ;; Set up Node debugging
     (require 'dap-node)
     (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-  
+    (require 'dap-go)
     ;; Bind `C-c l d` to `dap-hydra` for easy access
     (general-define-key
       :keymaps 'lsp-mode-map

@@ -26,9 +26,9 @@
 (server-start)
 
 (use-package exec-path-from-shell
-      :config
-      (when (memq window-system '(mac ns x))
-        (exec-path-from-shell-initialize)))
+  :config
+  (when (memq window-system '(mac ns x))
+    (exec-path-from-shell-initialize)))
 
 (setq mac-right-option-modifier 'nil
       mac-option-modifier 'super
@@ -513,7 +513,7 @@ folder, otherwise delete a word"
   ;; Set up Node debugging
   (require 'dap-node)
   (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
+  (require 'dap-go)
   ;; Bind `C-c l d` to `dap-hydra` for easy access
   (general-define-key
     :keymaps 'lsp-mode-map
