@@ -50,6 +50,8 @@
     - [[#emacs-configs-for-corfu][Emacs configs for Corfu]]
     - [[#dabbrev][Dabbrev]]
   - [[#save-minibuffer-history][Save minibuffer history]]
+- [[#editor-configuration][Editor configuration]]
+  - [[#tab-width][Tab width]]
 - [[#development][Development]]
   - [[#magit][Magit]]
   - [[#projectile][Projectile]]
@@ -566,6 +568,13 @@ Add icons to files names
      ;;(put 'evil-ex-history 'history-length 50)
      ;;(put 'kill-ring 'history-length 25))
  #+end_src
+
+* Editor configuration
+** Tab width
+#+begin_src emacs-lisp
+  (setq-default tab-width 2)
+  (setq-default evil-shift-width tab-width)
+#+end_src
 
 * Development
 ** Magit

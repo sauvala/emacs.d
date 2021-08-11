@@ -343,6 +343,9 @@ folder, otherwise delete a word"
   ;;(put 'evil-ex-history 'history-length 50)
   ;;(put 'kill-ring 'history-length 25))
 
+(setq-default tab-width 2)
+(setq-default evil-shift-width tab-width)
+
 (use-package magit
   :bind ("C-M-;" . magit-status)
   :commands (magit-status magit-get-current-branch)
