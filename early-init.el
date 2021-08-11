@@ -50,6 +50,7 @@
 (setq frame-title-format nil)
 (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
 (add-to-list 'default-frame-alist '(ns-appearance . dark))
+(setq ns-use-proxy-icon nil)
 
 (defvar js/default-font-size 150)
 (defvar js/default-variable-font-size 150)
