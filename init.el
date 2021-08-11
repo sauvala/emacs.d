@@ -232,6 +232,8 @@
 ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
 (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
 
+(mac-auto-operator-composition-mode t)
+
 (use-package orderless
   :defer 0.1
   :init

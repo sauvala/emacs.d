@@ -33,6 +33,7 @@
   - [[#recent-files][Recent files]]
   - [[#restarting-and-quitting-emacs][Restarting and quitting Emacs]]
   - [[#default-encoding][Default encoding]]
+  - [[#enable-font-ligatures][Enable font ligatures]]
 - [[#completion][Completion]]
   - [[#improve-completions][Improve completions]]
     - [[#orderless][Orderless]]
@@ -401,6 +402,11 @@ https://www.masteringemacs.org/article/working-coding-systems-unicode-emacs
   
   ;; Treat clipboard input as UTF-8 string first; compound text next, etc.
   (setq x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING))
+#+end_src
+
+** Enable font ligatures
+#+begin_src emacs-lisp
+  (mac-auto-operator-composition-mode t)
 #+end_src
 
 * Completion
