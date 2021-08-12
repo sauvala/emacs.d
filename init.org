@@ -61,6 +61,8 @@
   - [[#terminal][Terminal]]
   - [[#languages][Languages]]
     - [[#clojure][Clojure]]
+      - [[#cider][Cider]]
+      - [[#inf-clojure][inf-clojure]]
     - [[#javascript][Javascript]]
     - [[#go][Go]]
     - [[#java][Java]]
@@ -667,8 +669,16 @@ Add icons to files names
 
 ** Languages
 *** Clojure
+**** Cider
 #+begin_src emacs-lisp
-  (use-package cider)
+  ;(use-package cider)
+#+end_src
+
+**** inf-clojure
+#+begin_src emacs-lisp
+  (use-package inf-clojure
+    :hook
+    (clojure-mode . inf-clojure-minor-mode))
 #+end_src
 
 *** Javascript

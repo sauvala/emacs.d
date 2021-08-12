@@ -413,7 +413,11 @@ folder, otherwise delete a word"
 
 (use-package vterm)
 
-(use-package cider)
+;(use-package cider)
+
+(use-package inf-clojure
+  :hook
+  (clojure-mode . inf-clojure-minor-mode))
 
 (use-package nvm)
 
