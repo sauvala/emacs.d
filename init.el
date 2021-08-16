@@ -296,7 +296,7 @@ folder, otherwise delete a word"
   (vertico-cycle t)
   :custom-face
   ;; for doom-one use #3a3f5a 
-  (vertico-current ((t (:background "#689d6a"))))
+  (vertico-current ((t (:background "#3c3836"))))
   :init
   (vertico-mode))
 
