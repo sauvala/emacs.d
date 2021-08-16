@@ -308,7 +308,7 @@
 ** Theme
 #+begin_src emacs-lisp
   (use-package doom-themes
-    :hook (emacs-startup . (lambda () (load-theme 'doom-one t)))
+    :hook (emacs-startup . (lambda () (load-theme 'doom-gruvbox t)))
     :config
     (doom-themes-visual-bell-config))
 #+end_src
@@ -499,7 +499,8 @@ https://github.com/oantolin/embark
     :custom
     (vertico-cycle t)
     :custom-face
-    (vertico-current ((t (:background "#3a3f5a"))))
+    ;; for doom-one use #3a3f5a 
+    (vertico-current ((t (:background "#689d6a"))))
     :init
     (vertico-mode))
 #+end_src

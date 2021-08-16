@@ -158,7 +158,7 @@
   (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
 (use-package doom-themes
-  :hook (emacs-startup . (lambda () (load-theme 'doom-one t)))
+  :hook (emacs-startup . (lambda () (load-theme 'doom-gruvbox t)))
   :config
   (doom-themes-visual-bell-config))
 
@@ -295,7 +295,8 @@ folder, otherwise delete a word"
   :custom
   (vertico-cycle t)
   :custom-face
-  (vertico-current ((t (:background "#3a3f5a"))))
+  ;; for doom-one use #3a3f5a 
+  (vertico-current ((t (:background "#689d6a"))))
   :init
   (vertico-mode))
 
