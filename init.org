@@ -66,6 +66,7 @@
     - [[#javascript][Javascript]]
     - [[#go][Go]]
     - [[#java][Java]]
+    - [[#yaml][YAML]]
     - [[#lsp][LSP]]
       - [[#python][Python]]
       - [[#dap-mode][dap-mode]]
@@ -738,6 +739,11 @@ Javascript and Typescript
 *** Java
 #+begin_src emacs-lisp
   (use-package lsp-java)
+#+end_src
+
+*** YAML
+#+begin_src emacs-lisp
+  (use-package yaml-mode)
 #+end_src
 
 *** LSP

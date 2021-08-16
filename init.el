@@ -465,6 +465,8 @@ folder, otherwise delete a word"
 
 (use-package lsp-java)
 
+(use-package yaml-mode)
+
 (use-package lsp-mode
   :commands lsp
   :hook
