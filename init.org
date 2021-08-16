@@ -54,6 +54,7 @@
   - [[#tab-width][Tab width]]
   - [[#center-content][Center content]]
   - [[#sublimity][Sublimity]]
+  - [[#minimap][Minimap]]
 - [[#development][Development]]
   - [[#magit][Magit]]
   - [[#projectile][Projectile]]
@@ -585,15 +586,20 @@ Add icons to files names
 
 ** Center content
 #+begin_src emacs-lisp
-  (use-package centered-window)
+  ;; (use-package centered-window)
 #+end_src
 
 ** Sublimity
 #+begin_src emacs-lisp
-  (use-package sublimity
-    :config
-    (require 'sublimity-map)
-    (require 'sublimity-attractive))
+  ;; (use-package sublimity
+  ;;   :config
+  ;;   (require 'sublimity-map)
+  ;;   (require 'sublimity-attractive))
+#+end_src
+
+** Minimap
+#+begin_src emacs-lisp
+  (use-package minimap)
 #+end_src
 
 * Development
