@@ -844,3 +844,9 @@ folder, otherwise delete a word"
 (use-package speed-type)
 
 (use-package bug-hunter)
+
+(use-package wttrin
+  :straight (:host github :repo "etiago/emacs-wttrin" :branch "user-agent-fix")
+  :commands (wttrin)
+  :init
+  (setq wttrin-default-cities '("Espoo, Finland")))

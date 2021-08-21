@@ -99,6 +99,7 @@
 - [[#other-tools][Other tools]]
   - [[#speed-typing][Speed typing]]
   - [[#elisp-bug-hunter][Elisp bug hunter]]
+  - [[#weather-forecast][Weather forecast]]
 :END:
 
 * Add lexical binding to generated file
@@ -1217,4 +1218,14 @@ Javascript and Typescript
 ** Elisp bug hunter
 #+begin_src emacs-lisp
   (use-package bug-hunter)
+#+end_src
+
+** Weather forecast
+Use the fixed version of the package https://github.com/bcbcarl/emacs-wttrin/issues/16#issuecomment-748971896
+#+begin_src emacs-lisp
+  (use-package wttrin
+    :straight (:host github :repo "etiago/emacs-wttrin" :branch "user-agent-fix")
+    :commands (wttrin)
+    :init
+    (setq wttrin-default-cities '("Espoo, Finland")))
 #+end_src
